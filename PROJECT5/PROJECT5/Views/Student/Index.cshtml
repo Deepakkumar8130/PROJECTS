@@ -1,0 +1,146 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<h1>Welcome to the Dashboard</h1>
+<hr />
+<div class="container">
+    <div class=" flex-row-reverse mb-2">
+        <button type="button" id="addbtn" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add Student
+        </button>
+        <button type="button" id="addbtn" class=" btn btn-dark float-end" data-bs-toggle="modal" data-bs-target="#modalUploadFile">
+            Import File
+        </button>
+    </div>
+    <h1>Student List</h1>
+    <table id="tbl_Student" class="table table-bordered table-striped">
+        <thead class="bg-dark text-light">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Course</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+
+<!--Model--->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new Customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="card">
+                                <div class="card-header bg-info">
+                                    <div class="text-center ">
+                                        <h2 id="AddHeader">@ViewData["Title"]</h2>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <input type="hidden" id="txtId" />
+                                    <div class="form-group mb-3" id="formGroupName">
+                                        <label id="lblName">Employee Name</label>
+                                        <input class="form-control" onkeyup="requiredTextField('Name','name')" name="Name" id="txtName" />
+                                        @* <span asp-validation-for="Name"></span> *@
+                                        <span id="errName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3" id="formGroupEmail">
+                                        <label id="lblEmail">Employee Email</label>
+                                        <input class="form-control" onkeyup="Validate('Email','email')" name="Email" id="txtEmail" />
+                                        @* <span asp-validation-for="Email"></span> *@
+                                        <span id="errEmail" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3" id="formGroupPhone">
+                                        <label id="lblPhone">Employee Phone</label>
+                                        <input class="form-control" onkeyup="Validate('Phone','mobile number')" name="Phone" id="txtPhone" />
+                                        @* <span asp-validation-for="Email"></span> *@
+                                        <span id="errPhone" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3" id="formGroupGender">
+                                        <label id="lblGender">Gender</label>
+                                        <select class="form-select" onkeyup="requiredTextField('Gender','please select a gender')" name="Gender" id="ddlGender">
+                                            <option value="">Select</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+
+                                        </select>
+                                        @* <span asp-validation-for="Department"></span> *@
+                                        <span id="errGender" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3" id="formGroupDepartment">
+                                        <label id="lblCourse">Course</label>
+                                        <select class="form-select" onkeyup="requiredTextField('Course','please select a course')" name="Course" id="txtCourse">
+                                            <option value="">Select</option>
+                                            <option value="Csharp">Csharp</option>
+                                            <option value="C">C</option>
+                                            <option value="Java">Java</option>
+                                            <option value="Python">Python</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mt-3">
+                                        <input type="button" value="Submit" id="btnSubmit" class="btn btn-success w-25" />
+                                    </div><div class="form-group mt-3">
+                                        <div id="msg"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Upload Model-->
+<div class="modal fade" id="modalUploadFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Employee Profile Image</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" asp-action="Upload" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Choose Image</label>
+                                <input type="file" name="file" class="form-control" id="txtFile" accept=".xls,.xlsx" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="submit" asp-action="Upload" asp-controller="Excel" class="btn btn-info" id="btnUpload" value="Upload" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <p id="msgUpload"></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/custom.js"></script>
