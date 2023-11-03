@@ -1,0 +1,36 @@
+﻿
+
+#crd {
+    overflow-x: scroll;
+}
+
+.card {
+    width: 155%
+}
+
+
+#gender {
+    display: flex;
+    margin-bottom: 5px;
+    padding: 2px;
+    justify-content: space-around;
+}
+
+#PrevImg {
+    max-width: 150px;
+    max-height: 174px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    margin-top: 10px;
+}
+
+i.fa.fa-trash {
+    color: red;
+    font-size: 30px;
+}
+
+i.fa.fa-edit {
+    font-size: 30px;
+    color: blue;
+    margin-left: 10px;
+}

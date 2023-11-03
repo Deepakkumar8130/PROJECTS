@@ -1,0 +1,143 @@
+﻿@model Employee
+@{
+}
+<link href="~/css/tbl.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>List of Employees</h2>
+            </div>
+            <div class="card-body " id="crd">
+                <div class="text-end mb-2">
+                    <button id="addbtn" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Employee</button>
+                </div>
+                <table id="tbl_data" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Date Of Birth</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Country</th>
+                            <th>State</th>
+                            <th>City</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Employee</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="txtId" /><div class="form-floating py-2 col-12 ">
+                        <label class="form-label">Profile Image</label>
+                        <div class="mt-3">
+                            <input type="file" class="form-control-file d-none" id="ChooseImg" accept="image/*">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="col-4">
+                                    <img for="ChooseImg" src="https://placehold.jp/150x150.png" class="img-thumbnail" alt="Image" id="PrevImg">
+                                </div>
+                            </div>
+                            <label for="ChooseImg" class="btn btn-primary">Choose Image</label>
+                        </div>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input type="text" class="form-control border-0 shadow" asp-for="Name" id="txtName" />
+                        <label asp-for="Name" class="ms-3"></label>
+                        <span id="errName"></span>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input type="text" class="form-control border-0 shadow" asp-for="Email" onkeyup="requiredTextField('Name','name')" id="txtEmail" />
+                        <label asp-for="Email" class="ms-3">Email</label>
+                        <span id="errEmail"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <input type="text" asp-for="Mobile" class="form-control border-0 shadow" onkeyup="Validate('Mobile','mobile number')" onkeyup="Validate('Email','email')" id="txtMobile" />
+                        <label asp-for="Mobile" class="ms-3">Mobile No.</label>
+                        <span id="errMobile"></span>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input type="date" asp-for="DateOfBirth" class="form-control border-0 shadow" id="DOB" />
+                        <label asp-for="DateOfBirth" class="ms-3"></label>
+                    </div><div class="form-floating py-2 col-12">
+                        <div id="gender">
+                            <div class="radio-group">
+                                <label>Gender : </label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="male" name="gender" value="Male" class="form-check-input">
+                                <label for="male" class="radio-label">Male</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="female" name="gender" value="Female" class="form-check-input">
+                                <label for="female" class="radio-label">Female</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="other" name="gender" value="Other" class="form-check-input">
+                                <label for="other" class="radio-label">Other</label>
+                            </div>
+                        </div>
+                        <span id="errGender"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <textarea class="form-control border-0 shadow" asp-for="Address" onkeyup="requiredTextField('Address','Address')" id="txtAddress"></textarea>
+                        <label asp-for="Address" class="ms-3">Address</label>
+                        <span id="errAddress"></span>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <select class="form-select border-0 shadow" id="ddlCountry" name="Country_Id">
+                            <option value="">Select</option>
+                        </select>
+                        <label class="ms-3">Country</label>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <select class="form-select border-0 shadow" id="ddlState" name="State_Id">
+                            <option value="">Select</option>
+                        </select>
+                        <label class="ms-3">State</label>
+                    </div>
+                    <div class="form-floating py-2 col-12">
+                        <select class="form-select border-0 shadow" id="ddlCity" name="City_Id">
+                            <option value="">Select</option>
+                        </select>
+                        <label class="ms-3">City</label>
+                    </div>
+                    <div class="form-floating mb-3 text-center">
+                        <button type="button" class="btn btn-info w-50" id="btnSubmit" value="Submit">Save Changes</button>
+                    </div>
+                    <div class="form-group mt-3">
+                        <p id="msg"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/custom.js"></script>
