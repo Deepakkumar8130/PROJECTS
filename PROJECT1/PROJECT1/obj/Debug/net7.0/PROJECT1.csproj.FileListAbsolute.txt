@@ -1,0 +1,8 @@
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.csproj.AssemblyReference.cache
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.AssemblyInfoInputs.cache
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.AssemblyInfo.cs
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.csproj.CoreCompileInputs.cache
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.RazorAssemblyInfo.cache
+C:\Users\dk530\OneDrive\Desktop\PROJECT\PROJECT1\PROJECT1\obj\Debug\net7.0\PROJECT1.RazorAssemblyInfo.cs

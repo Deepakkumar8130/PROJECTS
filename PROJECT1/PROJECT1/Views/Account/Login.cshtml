@@ -1,0 +1,80 @@
+﻿@model LoginModel
+@{
+}
+
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+
+        .form-floating > input {
+            padding: 1.2rem;
+            border-radius: 0.3rem;
+            box-shadow: none;
+        }
+
+        .form-floating > label {
+            padding: 1rem 0.75rem;
+            margin-top: -1rem;
+            opacity: 0.65;
+            pointer-events: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-floating > input:focus ~ label,
+        .form-floating > input:not(:placeholder-shown) ~ label {
+            opacity: 1;
+            transform: translateY(-1rem) scale(0.75);
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+</style>
+
+<form method="post">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-5 ">
+            <div class="card mt-5">
+                <div class="card-header text-center bg-info">
+                    <h2>LOGIN MODEL</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Email','email')" asp-for="Email" id="txtEmail" />
+                        <label class="form-label" asp-for="Email" id="lblEmail"></label>
+                        <span id="errEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Password','Valid Password')" asp-for="Password" id="txtPassword" />
+                        <label class="form-label" asp-for="Password" id="lblPassword"></label>
+                        <span id="errPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" id="btnSubmit" class="mb-3 btn btn-primary w-100">Login</button>
+                    <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Registered New User...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/login.js"></script>

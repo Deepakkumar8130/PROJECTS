@@ -1,0 +1,42 @@
+﻿@model RegisterModel
+@{
+}
+
+
+<form method="post">
+    <div class="row justify-content-center align-items-center">
+        <div class=" col-lg-5 ">
+            <div class="card mt-5">
+                <div class="card-header text-center bg-info">
+                    <h2>REGISTER MODEL</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="requiredTextField('Name','name')" asp-for="Name" id="txtName" />
+                        <label class="form-label" asp-for="Name" id="lblName"></label>
+                        <span id="errName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Email','email')" asp-for="Email" id="txtEmail" />
+                        <label class="form-label" asp-for="Email" id="lblEmail"></label>
+                        <span id="errEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Password','Valid Password')" asp-for="Password" id="txtPassword" />
+                        <label class="form-label" asp-for="Password" id="lblConfirmPassword"></label>
+                        <span id="errPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('ConfirmPassword','Valid ConfirmPassword')" asp-for="ConfirmPassword" id="txtConfirmPassword" />
+                        <label class="form-label" asp-for="ConfirmPassword" id="lblConfirmPassword"></label>
+                        <span id="errConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <input type="submit" value="Submit" class="mb-3 btn btn-primary w-100" />
+                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none">Already Registered User...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/register.js"></script>
