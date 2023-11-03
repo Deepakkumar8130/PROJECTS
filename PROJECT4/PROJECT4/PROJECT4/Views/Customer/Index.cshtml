@@ -1,0 +1,152 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<button type="button" id="addbtn" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add Customer
+</button>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Customer List</h1>
+            <table id="tbl_Customer" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Email</td>
+                        <td>Mobile</td>
+                        <td>Gender</td>
+                        <td>Country</td>
+                        <td>State</td>
+                        <td>City</td>
+                        <td>Action</td>
+                        <td>Upload</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Model--->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new Customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <input type="hidden" id="txtId" />
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" class="form-control" onkeyup="requiredTextField('Name','name')" id="txtName" />
+                                <span id="errName"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Customer Email</label>
+                                <input type="text" class="form-control" onkeyup="Validate('Email','email')" id="txtEmail" />
+                                <span id="errEmail"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Customer Mobile</label>
+                                <input type="text" class="form-control" onkeyup="Validate('Mobile','mobile number')" id="txtMobile" />
+                                <span id="errMobile"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Customer Gender</label>
+                                <select class="form-control" id="ddlGender">
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span id="errGender"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control" id="ddlCountry">
+                                    <option value="">Select</option>
+                                </select>
+                                <span id="errCountry"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>State</label>
+                                <select class="form-control" id="ddlState">
+                                    <option value="">Select</option>
+                                </select>
+                                <span id="errState"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>City</label>
+                                <select class="form-control" id="ddlCity">
+                                    <option value="">Select</option>
+                                </select>
+                                <span id="errCity"></span>
+                            </div>
+                            <div class="form-group mt-3">
+
+                                <input type="button" class="btn btn-info" id="btnSubmit" value="Submit" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <p id="msg"></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal upload profile-->
+<div class="modal fade" id="modalUploadProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Employee Profile Image</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="hidden" id="hdnId" />
+                                <label>Choose Image</label>
+                                <input type="file" class="form-control" id="txtFile" />
+                            </div>
+                            <div class="form-group mt-3">
+
+                                <input type="button" class="btn btn-info" id="btnUpload" value="Upload" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <p id="msgUpload"></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/custom.js" type="text/javascript"></script>
