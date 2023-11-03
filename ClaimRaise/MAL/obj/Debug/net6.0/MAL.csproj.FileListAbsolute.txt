@@ -1,0 +1,11 @@
+C:\Csharp\PROJECTS\ClaimRaise\MAL\bin\Debug\net6.0\MAL.deps.json
+C:\Csharp\PROJECTS\ClaimRaise\MAL\bin\Debug\net6.0\MAL.dll
+C:\Csharp\PROJECTS\ClaimRaise\MAL\bin\Debug\net6.0\MAL.pdb
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.AssemblyInfoInputs.cache
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.AssemblyInfo.cs
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.csproj.CoreCompileInputs.cache
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.dll
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\refint\MAL.dll
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\MAL.pdb
+C:\Csharp\PROJECTS\ClaimRaise\MAL\obj\Debug\net6.0\ref\MAL.dll
