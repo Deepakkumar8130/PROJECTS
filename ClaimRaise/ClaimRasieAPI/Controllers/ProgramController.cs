@@ -25,27 +25,47 @@ namespace ClaimRasieAPI.Controllers
 
         [HttpPost]
         [Route("GetUserByEmailId")]
-        public async Task<UserVM> GetUserByEmailId(string emailID)
+        public async Task<IActionResult> GetUserByEmailId(string emailID)
         {
             try
             {
                 var userInfo = await _programService.GetUserByEmailId(emailID);
-                return userInfo;
+                response.status = 200;
+                response.ok = true;
+                response.data = userInfo;
+                response.message = "Get User info successfully!";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                response.status = 500;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
             }
+            return Ok(response);
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetProgramsById")]
-        public async Task<List<UserProgram>> GetProgramsById(int UserId)
+        public async Task<IActionResult> GetProgramsById(int UserId)
         {
-            var Programs = await _programService.GetProgramsById(UserId);
-            return Programs;
+            try
+            {
+                var Programs = await _programService.GetProgramsById(UserId);
+                response.status = 200;
+                response.ok = true;
+                response.data = Programs;
+                response.message = "Get User Programs successfully!";
+            }
+            catch (Exception ex)
+            {
+                response.status = 500;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
         }
     }
 }

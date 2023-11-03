@@ -7,17 +7,28 @@ function GetMenuProgram() {
     let UserId = window.localStorage.getItem("UserId")
     console.log(typeof UserId)
     console.log(UserId)
-    alert("check")
+    //alert("check")
     $.ajax({
         "url": base_url + "Program/GetProgramsById",
-        "method": "POST",
+        "method": "GET",
         "contentType": "application/json; charset=utf-8",
         dataType: "json",
-        "data": parseInt(UserId),
+        "data": {UserId},
         "success": function (response) {
             if (response.ok) {
                 alert("OK")
                 console.log(response);
+                var userMenu = ''
+               
+                response.data.forEach(function (item, index) {
+                    userMenu += '<li class="nav-item menu-open">'
+                    userMenu += '<a href="'+base_url+item.path+'" class="nav-link">'
+                    userMenu += '<p>'+item.title+'</p></a>'
+                })
+                $("#UserMenu").html(userMenu);
+                $("#UserName").html('<a href="#" class="d-block">'+window.localStorage.getItem("UserName")+'</a>');
+
+                
             }
             else {
                 $("#msg").html(response.message).css("color", "red");
