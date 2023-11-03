@@ -1,0 +1,62 @@
+﻿@model Employee
+@{
+	Layout = "_Layout";
+}
+<form method="post">
+	<div class="card ">
+		<div class="card-header bg-info">
+			<div class="text-center ">
+				<h2 id="AddHeader">Delete Employee</h2>
+			</div>
+		</div>
+
+		<div class="form-group mt-3">
+			<div class="text-danger" asp-validation-summary="All"></div>
+		</div>
+		<input type="hidden" asp-for="Id" />
+		<div class="card-body">
+			<div class="form-group mb-3" id="formGroupName">
+				<label id="lblName">Employee Name</label>
+				<input class="form-control" id="txtName" asp-for="Name" readonly/>
+			</div>
+			<div class="form-group mb-3" id="formGroupMail">
+				<label id="lblMail">Employee Email</label>
+				<input class="form-control" id="txtMail" asp-for="Email" readonly/>
+			</div>
+			<div class="form-group mb-3" id="formGroupPhone">
+				<label id="lblPhone">Employee Phone</label>
+				<input class="form-control" id="txtPhone" asp-for="Email" readonly/>
+			</div>
+			<div class="form-group mb-3" id="formGroupGender">
+				<label id="lblGender">Gender</label>
+				<select class="form-control" id="txtGender" asp-for="Gender" disabled>
+					<option value="">Select</option>
+					@foreach (var item in ViewBag.Gender)
+					{
+						<option value="@item.genderId">@item.gender</option>
+					}
+				</select>
+			</div>
+			<div class="form-group mb-3" id="formGroupSalary">
+				<label id="lblSalary">Employee Salary</label>
+				<input class="form-control" id="txtSalary" asp-for="Salary" readonly/>
+			</div>
+			<div class="form-group mb-3" id="formGroupDepartment">
+				<label id="lblDepartment">Department</label>
+				<select class="form-control" id="txtDepartment" asp-for="Department" disabled>
+					<option value="">Select</option>
+					@foreach (var item in ViewBag.Department)
+					{
+						<option value="@item.DeptId" >@item.Name</option>
+					}
+				</select>
+			</div>
+
+			<div class="form-group mt-3">
+				<input type="submit" value="Delete" id="btnSubmit" class="btn btn-danger w-25" />
+				<button asp-action="Index" asp-controller="Employee" class="btn btn-secondary w-25">Back</button>
+			</div>
+		</div>
+	</div>
+</form>
+<script src="~\custom\customer.js"></script>

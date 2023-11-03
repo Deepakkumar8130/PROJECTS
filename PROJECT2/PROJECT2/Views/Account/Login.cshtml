@@ -1,0 +1,33 @@
+﻿@model LoginModel
+@{
+}
+
+
+
+<form method="post">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-5 ">
+            <div class="card mt-5">
+                <div class="card-header text-center bg-info">
+                    <h2>LOGIN MODEL</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Email','email')" asp-for="Email" id="txtEmail" />
+                        <label class="form-label" asp-for="Email" id="lblEmail"></label>
+                        <span id="errEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" onkeyup="Validate('Password','Valid Password')" asp-for="Password" id="txtPassword" />
+                        <label class="form-label" asp-for="Password" id="lblPassword"></label>
+                        <span id="errPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" id="btnSubmit" class="mb-3 btn btn-primary w-100">Login</button>
+                    <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Registered New User...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/login.js"></script>

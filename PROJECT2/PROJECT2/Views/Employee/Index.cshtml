@@ -1,0 +1,53 @@
+﻿@model List<EmployeeVM>
+@{
+	Layout = "_Layout";
+}
+
+<h1>Welcome to the Dashboard</h1>
+<hr />
+<form>
+	<div class="text-end mb-2">
+		<button asp-controller="Employee" asp-action="CreateOrEdit" class="btn btn-primary">Add Employee</button>
+	</div>
+
+<table class="table table-bordered table-striped">
+	<thead class="bg-dark text-light">
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Phone</th>
+			<th>Gender</th>
+			<th>Salary</th>
+			<th>Designation</th>   
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+			@if(Model != null && Model.Any())
+			{
+				int i = 0;
+				
+				@foreach(var item in Model)
+				{
+					i++;
+					<tr>
+						<td>@i.</td>
+						<td>@item.Name</td>
+						<td>@item.Email</td>
+						<td>@item.Phone</td>
+						<td>@item.Gender</td>
+						<td>@item.Salary</td>
+						<td>@item.Department</td>
+						<td>
+							<div class="d-flex flex-grow-1">
+								<button asp-action="CreateOrEdit" asp-controller="Employee" asp-route-id="@item.Id" class="btn btn-success m-1">Edit</button>
+								<button asp-action="Delete" asp-controller="Employee" asp-route-id="@item.Id" class="btn btn-danger m-1">Delete</button>
+							</div>
+						</td>
+					</tr>
+				}
+			}
+	</tbody>
+</table>
+</form>
