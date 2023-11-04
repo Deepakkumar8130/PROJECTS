@@ -5,8 +5,8 @@ $(document).ready(function () {
 
 function GetMenuProgram() {
     let UserId = window.localStorage.getItem("UserId")
-    console.log(typeof UserId)
-    console.log(UserId)
+    //console.log(typeof UserId)
+    //console.log(UserId)
     //alert("check")
     $.ajax({
         "url": base_url + "Program/GetProgramsById",
@@ -16,13 +16,13 @@ function GetMenuProgram() {
         "data": {UserId},
         "success": function (response) {
             if (response.ok) {
-                alert("OK")
-                console.log(response);
+                //alert("OK")
+                //console.log(response);
                 var userMenu = ''
                
                 response.data.forEach(function (item, index) {
                     userMenu += '<li class="nav-item menu-open">'
-                    userMenu += '<a href="'+base_url+item.path+'" class="nav-link">'
+                    userMenu += '<a href="'+item.path+'" class="nav-link">'
                     userMenu += '<p>'+item.title+'</p></a>'
                 })
                 $("#UserMenu").html(userMenu);

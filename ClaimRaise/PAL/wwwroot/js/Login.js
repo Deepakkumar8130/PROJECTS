@@ -7,7 +7,7 @@ $(document).ready(function () {
             "UserId": $("#txtUserId").val(),
             "Password": $("#txtPassword").val()
         };
-        console.log(user);
+        //console.log(user);
       
 
         $.ajax({

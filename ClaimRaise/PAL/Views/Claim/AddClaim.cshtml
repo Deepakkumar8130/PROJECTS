@@ -1,0 +1,78 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="row">
+    <div class="col-8 offset-2">
+        <div class="card">
+            <div class="card-header">
+                <h3>Add Claim</h3>
+            </div>
+            <div class="card-body">
+                <form id="ClaimForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimTitle">
+                                <label>Claim Title</label>
+                                <input type="text" class="form-control" id="txtClaimTitle" />
+                                <span id="errClaimTitle"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimReason">
+                                <label>Claim Reason</label>
+                                <select class="form-control" id="txtClaimReason">
+                                    <option value="">Select</option>
+                                    <option value="Travel">Travel</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Mobile Recharge">Mobile Recharge</option>
+                                </select>
+                                <span id="errClaimReason"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimAmount">
+                                <label>Claim Amount</label>
+                                <input type="number" class="form-control" id="txtClaimAmount" />
+                                <span id="errClaimAmount"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimExpenseDt">
+                                <label>Expense Date</label>
+                                <input type="date" class="form-control" id="txtClaimExpenseDt" />
+                                <span id="errClaimExpenseDt"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimEvidence">
+                                <label>Claim Evidence</label>
+                                <input type="file" class="form-control" id="txtClaimEvidence" />
+                                <span id="errClaimEvidence"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupClaimDescription">
+                                <label>Claim Description</label>
+                                <textarea type="text" class="form-control" id="txtClaimDescription"></textarea>
+                                <span id="errClaimDescription"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-around ">
+                        <button type="button" class="btn w-25 btn-sm btn-primary" id="btnFormReset">Reset</button>
+                        <button type="button" class="btn w-25 btn-sm btn-success" id="btnClaimSubmit">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/claim/employeeclaim.js"></script>
