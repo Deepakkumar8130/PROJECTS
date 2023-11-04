@@ -192,47 +192,6 @@ select*from customer
 
 
 
-CREATE PROC USP_DELETE_CUSTOMER(
-@id INT
-)
-AS
-BEGIN
-	IF(EXISTS (SELECT 1 FROM customer where id = @id))
-	BEGIN
-		UPDATE FROM customer
-		SET
-		isActive = 0
-		WHERE id = @id
-		SELECT 1 AS RESULT
-	END
-	ELSE
-	BEGIN
-		SELECT 2 AS RESULT
-	END
-END
-
-
-
-
-
-
-CREATE PROC USP_GET_CUSTOMER(
-@id INT
-)
-AS
-BEGIN
-	SELECT
-	id,
-	name,
-	email,
-	mobile,
-	gender,
-	country_id,
-	state_id,
-	city_id
-	FROM customer where id = @id AND isActive=1
-END
-
 CREATE PROC USP_UNDO_CUSTOMER(
 @id INT,
 @name VARCHAR(50),
@@ -266,6 +225,7 @@ EXEC USP_SAVE_CUSTOMER 'Test23','Test23@gmail.com','1234567890','Male',1,1,1;
 EXEC USP_DELETE_CUSTOMER 1;
 EXEC USP_GET_CUSTOMER 2;
 EXEC USP_UPDATE_CUSTOMER 2,'Test','Test@gmail.com','1234567890','Male',1,1,1;
+EXEC USP_GET_BINCUSTOMERS 
 
 select*from sys.tables
 
@@ -285,3 +245,25 @@ BEGIN
 END
 
 
+
+CREATE PROC USP_GET_BINCUSTOMERS  
+AS  
+ BEGIN  
+  SELECT  
+	  CUST.id Id,  
+	  CUST.Name,  
+	  CUST.Mobile,  
+	  CUST.Email,  
+	  CUST.gender Gender,  
+	  C.name Country,  
+	  S.name State,  
+	  CTY.name City  
+	  FROM  customer(NOLOCK) CUST  
+	  LEFT JOIN country C  
+	  ON CUST.country = C.id  
+	  LEFT JOIN state(NOLOCK) S  
+	  ON CUST.state = S.id  
+	  LEFT JOIN city(NOLOCK) CTY  
+	  ON CUST.city = CTY.id  
+	  WHERE isActive = 0  
+ END
