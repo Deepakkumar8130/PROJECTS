@@ -14,7 +14,7 @@ namespace BAL.Implementations
 {
     public class ProgramService : IProgramService
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext _context { get; }
 
         public ProgramService(ApplicationDbContext context)
         {

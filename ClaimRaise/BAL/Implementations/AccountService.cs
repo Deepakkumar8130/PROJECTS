@@ -16,7 +16,7 @@ namespace BAL.Implementations
 {
     public class AccountService : IAccountService
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext _context { get; }
 
         public AccountService(ApplicationDbContext context)
         {

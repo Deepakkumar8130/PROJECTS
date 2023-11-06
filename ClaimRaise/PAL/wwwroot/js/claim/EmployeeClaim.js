@@ -48,14 +48,33 @@ function addClaimRequest() {
         $.ajax({
             url: base_url + "Claim/ClaimRequest",
             method: "POST",
+            cache: false,
             contentType: false,
             processData: false,
-            //headers: {
-            //    "Authorization": "Bearer" + localStorage.getItem("token")
-            //},
+            headers: {
+                "Authorization": "Bearer" + localStorage.getItem("token")
+            },
             data: data,
             "success": function (response) {
-                console.log(response)
+                if (response.ok) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: response.message,
+                        icon: "success",
+                        timer:1500
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        timer: 2000
+                    });
+                }
+                setTimeout(function () {
+                    location.reload()
+                }, 1500)
             },
             "error": function (err) {
                 console.log(err)

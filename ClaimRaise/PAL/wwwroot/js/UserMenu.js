@@ -22,7 +22,7 @@ function GetMenuProgram() {
                
                 response.data.forEach(function (item, index) {
                     userMenu += '<li class="nav-item menu-open">'
-                    userMenu += '<a href="'+item.path+'" class="nav-link">'
+                    userMenu += '<a href="' +rootPath+item.path+'" class="nav-link">'
                     userMenu += '<p>'+item.title+'</p></a>'
                 })
                 $("#UserMenu").html(userMenu);

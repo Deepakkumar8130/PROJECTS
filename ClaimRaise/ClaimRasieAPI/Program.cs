@@ -34,6 +34,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IProgramService, ProgramService>();
+builder.Services.AddTransient<IClaimService, ClaimService>();
 
 
 

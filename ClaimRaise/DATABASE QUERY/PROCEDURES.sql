@@ -10,16 +10,16 @@ BEGIN
 		BEGIN
 			IF EXISTS (SELECT 1 FROM User_Master(NOLOCK) WHERE Email = @email AND Password = DBO.HashPassword(@pass))
 				BEGIN
-					SELECT 1 AS RESULT
+					SELECT 1 AS RESULT;
 				END
 			ELSE
 				BEGIN
-					SELECT 2 AS RESULT
+					SELECT 2 AS RESULT;
 				END
 		END
 	ELSE
 		BEGIN
-			SELECT 3 AS RESULT
+			SELECT 3 AS RESULT;
 		END
 END
 
@@ -46,7 +46,7 @@ BEGIN
 	where tbl.UserId = @userId
 	AND tbl.Status = 1 
 	AND prog.Status = 1
-	ORDER BY prog.Display_Sequence
+	ORDER BY prog.Display_Sequence;
 END
 
 /*----- FOR CHECKING-----*/
@@ -63,7 +63,7 @@ AS
 BEGIN
 	SELECT Id, Nm, Email, Mobile, Manager_Id, Status
 		FROM User_Master(NOLOCK)
-		WHERE Email = @email
+		WHERE Email = @email;
 END
 
 /*----- FOR CHECKING-----*/
@@ -81,7 +81,7 @@ CREATE PROCEDURE USP_RAISE_CLAIM_REQUEST
 @Claim_Reason VARCHAR(100),
 @Amount DECIMAL,
 @Evidence VARCHAR(500) = NULL,
-@ExpenseDt DATETIME,
+@ExpenseDt VARCHAR(100),
 @Claim_Description VARCHAR(500)
 AS
 BEGIN
@@ -89,14 +89,17 @@ BEGIN
 	DECLARE @ClaimId INT
 	SELECT @Current_Status =NextAction FROM Employee_Claim_Master_Mapping (NOLOCK)
 							 WHERE CurrentAction = 'Initiated'
-	BEGIN TRAN Trn_Claim
-		BEGIN TRY
+	
+		
 		/*CHECK CLAIM TABLE USER ALREADY RAISED CLAIM OR NOT*/
 		IF EXISTS (SELECT 1 FROM Claim_Master(NOLOCK) WHERE UserId = @UserId AND CurrentStatus LIKE '%Pending%')
 			BEGIN
-			RAISERROR('Claim Already In Pending',1,1)
-			RETURN
+			  THROW 50000, 'Claim already in pending', 1
+			--RAISERROR('Claim Already In Pending', 1, 1);
+			RETURN;
 			END
+		BEGIN TRY
+			BEGIN TRAN Trn_Claim;
 		/*INSERT INTO CLAIM RECORD TABLE*/
 			INSERT INTO Claim_Master (
 										UserId ,
@@ -142,10 +145,10 @@ BEGIN
 										  @Claim_Description,
 										  1
 										)
-		COMMIT TRAN Trn_Cliam
+		COMMIT TRAN Trn_Claim;
 		END TRY
 		BEGIN CATCH
-			ROLLBACK TRAN Trn_Claim
+			ROLLBACK TRAN Trn_Claim;
 		END CATCH
 END
 
@@ -184,7 +187,7 @@ BEGIN
 			AND um.Manager_Id = CASE WHEN @role = 'Manager'
 										THEN @userId
 										ELSE um.Manager_Id
-								END
+								END;
 END
 
 
@@ -202,15 +205,15 @@ CREATE PROCEDURE USP_UPDATE_CLAIM
 @remark VARCHAR(200)
 AS
 BEGIN
-	DECLARE @current_status VARCHAR(100)
-	DECLARE @next_action VARCHAR(100)
+	DECLARE @current_status VARCHAR(100);
+	DECLARE @next_action VARCHAR(100);
 
 	SELECT @current_status = CurrentStatus FROM Claim_Master(NOLOCK)
-							 WHERE Id = @claimId
+							 WHERE Id = @claimId;
 	
 	SELECT @next_action = NextAction FROM Employee_Claim_Master_Mapping (NOLOCK)
-							 WHERE CurrentAction = @current_status AND Status = @action
-	BEGIN TRAN Trn_Update_Claim
+							 WHERE CurrentAction = @current_status AND Status = @action;
+	BEGIN TRAN Trn_Update_Claim;
 		BEGIN TRY
 		UPDATE Claim_Master SET CurrentStatus = @next_action
 							WHERE Id = @claimId
@@ -229,11 +232,11 @@ BEGIN
 											GETDATE(),
 											@remark,
 											1
-										)
-		COMMIT TRAN Trn_Update_Claim
+										);
+		COMMIT TRAN Trn_Update_Claim;
 		END TRY
 		BEGIN CATCH
-		ROLLBACK TRAN Trn_Update_Claim
+		ROLLBACK TRAN Trn_Update_Claim;
 		END CATCH
 END
 

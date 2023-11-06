@@ -4,6 +4,7 @@ using BAL.Interfaces;
 using ClaimAPI.Enums;
 using ClaimAPI.Models;
 using MAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,13 +24,13 @@ namespace ClaimRasieAPI.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetUserByEmailId")]
-        public async Task<IActionResult> GetUserByEmailId(string emailID)
+        public async Task<IActionResult> GetUserByEmailId(string emailId)
         {
             try
             {
-                var userInfo = await _programService.GetUserByEmailId(emailID);
+                var userInfo = await _programService.GetUserByEmailId(emailId);
                 response.status = 200;
                 response.ok = true;
                 response.data = userInfo;

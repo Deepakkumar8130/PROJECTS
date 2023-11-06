@@ -1,31 +1,64 @@
-﻿using MAL;
+﻿using BAL.Interfaces;
+using ClaimAPI.Models;
+using MAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace ClaimRasieAPI.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClaimController : ControllerBase
     {
-        public Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment { get; set; }
-        public ClaimController(Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
+        private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment { get; set; }
+        private IClaimService _claimService { get; set; }
+        private APIResponse response = new APIResponse();
+
+        public ClaimController(Microsoft.AspNetCore.Hosting.IHostingEnvironment environment, IClaimService claimService)
         {
             Environment = environment;
+            _claimService = claimService;
         }
 
         [HttpPost]
         [Route("ClaimRequest")]
         public async Task<IActionResult> ClaimRequest()
         {
-            var formData = Request.Form["claim"];
-            var formEvidence = Request.Form.Files[0];
+            try
+            {
+                var formData = Request.Form["claim"];
+                var formEvidence = Request.Form.Files[0];
 
-            var claim = JsonConvert.DeserializeObject<ClaimRequestModel>(formData);
-            claim.Evidence = UploadEvidence(formEvidence);
+                var claim = JsonConvert.DeserializeObject<ClaimRequestModel>(formData);
+                claim.Evidence = UploadEvidence(formEvidence);
+                var result = await _claimService.RaiseClaimRequest(claim);
 
-            return Ok("successfully");
+                if (string.IsNullOrEmpty(result))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = null;
+                    response.message = "Claim request rasied successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
         }
 
         private string UploadEvidence(IFormFile file)

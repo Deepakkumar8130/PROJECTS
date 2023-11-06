@@ -1,4 +1,5 @@
 var base_url = "https://localhost:7183/api/";
+var rootPath = "https://localhost:7289/";
 checkUserLoggedIn();
 
 function checkUserLoggedIn() {
@@ -10,7 +11,8 @@ function checkUserLoggedIn() {
 
 $(document).ready(function (){
     $("#btnLogout").click(function () {
-        localStorage.removeItem("user");
+        localStorage.removeItem("UserId");
+        localStorage.removeItem("UserName");
         localStorage.removeItem("token");
         window.location.href = "/Account/Login";
     })
