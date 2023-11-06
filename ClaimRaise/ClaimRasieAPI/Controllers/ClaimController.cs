@@ -79,5 +79,72 @@ namespace ClaimRasieAPI.Controllers
             file.CopyTo(stream);
             return "EvidenceFiles/" + fileName;
         }
+
+        [HttpGet]
+        [Route("GetAllPendingRequests")]
+        public async Task<IActionResult> GetAllPendingRequests(int UserId, string Role)
+        {
+            try
+            {
+                var result = await _claimService.GetAllPendingRequests(UserId,Role);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = result.Item2;
+                    response.message = "Claim request get successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("ActionOnRequest")]
+        public async Task<IActionResult> ActionOnRequest(ClaimAction claim)
+        {
+            try
+            {
+                var result = await _claimService.ActionOnRequest(claim);
+
+                if (string.IsNullOrEmpty(result))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = null;
+                    response.message = "Claim action updated successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
     }
 }

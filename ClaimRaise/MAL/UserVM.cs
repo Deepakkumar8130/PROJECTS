@@ -13,5 +13,6 @@ namespace MAL
         public string Email { get; set; }
         public string Mobile { get; set; }
         public string ManagerId { get; set; }
+        public string Role { get; set; }
     }
 }

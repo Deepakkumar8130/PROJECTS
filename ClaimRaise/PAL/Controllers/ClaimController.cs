@@ -4,7 +4,12 @@ namespace PAL.Controllers
 {
     public class ClaimController : Controller
     {
-        public IActionResult AddClaim()
+        public async Task<IActionResult> AddClaim()
+        {
+            return View();
+        }
+        
+        public async Task<IActionResult> ShowClaim()
         {
             return View();
         }

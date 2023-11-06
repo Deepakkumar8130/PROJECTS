@@ -4,7 +4,7 @@ namespace PAL.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View();
         }

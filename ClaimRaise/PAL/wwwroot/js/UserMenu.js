@@ -26,6 +26,7 @@ function GetMenuProgram() {
                     userMenu += '<p>'+item.title+'</p></a>'
                 })
                 $("#UserMenu").html(userMenu);
+                $("#UserRole").text(localStorage.getItem("UserRole"));
                 $("#UserName").html('<a href="#" class="d-block">'+window.localStorage.getItem("UserName")+'</a>');
 
                 

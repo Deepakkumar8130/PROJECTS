@@ -19,10 +19,11 @@ $(document).ready(function () {
             "success": function (response) {
                 if (response.ok) {
                     $("#msg").html(response.message).css("color", "green");
-                    debugger
+                    //debugger
                     var user = response.data;
-                    localStorage.setItem("UserId", user.id)
-                    localStorage.setItem("UserName", user.userName)
+                    localStorage.setItem("UserId", user.id);
+                    localStorage.setItem("UserRole", user.role);
+                    localStorage.setItem("UserName", user.userName);
                     //delete user.password;
                     localStorage.setItem("token", response.token);
                    

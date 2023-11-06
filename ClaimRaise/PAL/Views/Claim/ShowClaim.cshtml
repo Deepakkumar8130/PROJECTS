@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="tblPendingRequest">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Claim By</th>
+                        <th>Reason</th>
+                        <th>Claim Date</th>
+                        <th>Claim Amount</th>
+                        <th>Expense Date</th>
+                        <th>Remarks</th>
+                        <th>View Evidence</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal -->
+<div class="modal fade" id="modalAction">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Approve/Reject</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <input type="hidden" id="hdnClaimId" />
+                        <div class="form-group" id="formGroupRemarks">
+                            <label>Remarks</label>
+                            <textarea class="form-control" id="txtRemarks"></textarea>
+                            <span id="errRemarks"></span>
+                        </div>
+                    </div>
+                    <div class="col-10 offset-1">
+                        <div class="form-group">
+                            <button class="btn btn-warning" id="btnReject">Reject</button>
+                            <button class="btn btn-success float-right" id="btnApprove">Approve</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+<script src="~/js/claim/claimaction.js"></script>

@@ -61,9 +61,13 @@ CREATE PROCEDURE USP_GET_USER_BY_EMAIL
 @email VARCHAR(100)
 AS
 BEGIN
-	SELECT Id, Nm, Email, Mobile, Manager_Id, Status
-		FROM User_Master(NOLOCK)
-		WHERE Email = @email;
+	SELECT um.Id, um.Nm, um.Email, um.Mobile, um.Manager_Id, um.Status, rm.Role
+		FROM User_Master(NOLOCK) um
+		INNER JOIN Role_Employee_Mapping(NOLOCK) rem
+		ON um.Id = rem.EmpId
+		INNER JOIN Role_Master(NOLOCK) rm
+		ON rem.RoleId = rm.Id
+		WHERE um.Email = @email;
 END
 
 /*----- FOR CHECKING-----*/
@@ -169,16 +173,16 @@ CREATE PROCEDURE USP_GET_PENDING_REQUEST
 @userId INT
 AS
 BEGIN
-	SELECT  cm.Id,
-			um.Nm,
-			cm.Claim_Title,
-			cm.Claim_Reason,
-			cm.Amount,
-			cm.ClaimDt,
-			cm.Evidence,
-			cm.ExpenseDt,
-			cm.Claim_Description,
-			cm.CurrentStatus
+	SELECT  cm.Id ClaimId,
+			um.Nm EmployeeName,
+			cm.Claim_Title ClaimTitle,
+			cm.Claim_Reason ClaimReason,
+			cm.Amount ClaimAmount,
+			cm.ClaimDt ClaimDt,
+			cm.Evidence ClaimEvidence,
+			cm.ExpenseDt ClaimExpenseDt,
+			cm.Claim_Description ClaimDescription,
+			cm.CurrentStatus CurrentStatus
 			FROM Claim_Master(NOLOCK) cm
 			INNER JOIN User_Master(NOLOCK) um
 			ON cm.UserId = um.Id
