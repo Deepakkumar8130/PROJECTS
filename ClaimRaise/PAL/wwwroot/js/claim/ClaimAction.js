@@ -1,12 +1,12 @@
 ﻿$(document).ready(function () {
-    console.log(localStorage.getItem("UserId"))
-    console.log(localStorage.getItem("UserRole"))
+    //console.log(localStorage.getItem("UserId"))
+    //console.log(localStorage.getItem("UserRole"))
     GetAllPendingRequests();
 
 
     $("#btnReject").click(function () {
         isValid = requiredTextFilled("Remarks", "remarks");
-        if (!isvalid) { return false; }
+        if (!isValid) { return false; }
 
         if (confirm("Are you sure to reject this request ?")) {
             ApproveRejectRequest(0)
@@ -15,7 +15,7 @@
 
     $("#btnApprove").click(function () {
         isValid = requiredTextFilled("Remarks", "remarks");
-        if (!isvalid) { return false; }
+        if (!isValid) { return false; }
 
         if (confirm("Are you sure to reject this request ?")) {
             ApproveRejectRequest(1)
@@ -28,14 +28,19 @@ function GetAllPendingRequests() {
         url: base_url + "Claim/GetAllPendingRequests",
         method: "GET",
         contentType: JSON,
-        //headers: {
-        //    "Authorization": "Bearer " + localStorage.getItem("token")
-        //},
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
         data: { "UserId": localStorage.getItem("UserId"), "Role": localStorage.getItem("UserRole") },
         "success": function (response) {
-            console.log(response.data)
+            //console.log(response.data)
             if (response.ok) {
                 $("#tblPendingRequest").DataTable({
+                    "scrollY": "300px",  // Set the vertical scrolling height
+                    "paging": true,      // Enable pagination
+                    "lengthChange": false, // Disable the number of rows per page change
+                    "searching": false,   // Disable search box
+                    "info": false,         // Disable information display
                     data: response.data,
                     columns: [
                         { data: "claimTitle"},
@@ -48,13 +53,19 @@ function GetAllPendingRequests() {
                         {
                             data: "evidence", width: "70px", class: "text-center", render: function (data) {
                                 var btn = '<a class="btn btn-sm btn-info">View</a>'
-                                return btn
+                                return btn;
+                            }
+                        },
+                        {
+                            data: "claimId", width: "70px", class: "text-center", render: function (id) {
+                                var btn = '<a class="btn btn-sm btn-info" onclick="ShowActionHistory(' + id + ')">View</a>'
+                                return btn;
                             }
                         },
                         {
                             data: "claimId", class: "text-center", render: function (id) {
                                 var btn = '<a class="btn btn-sm btn-info" onclick="ActionRequest(' + id + ')">Action</a>'
-                                return btn
+                                return btn;
                             },
                         }
                     ]
@@ -76,5 +87,66 @@ function ActionRequest(id) {
 
 
 function ApproveRejectRequest(action) {
-    
+    var claim = {
+        ClaimId: $("#hdnClaimId").val(),
+        Action: action,
+        UserId: localStorage.getItem("UserId"),
+        Role: localStorage.getItem("UserRole"),
+        Remarks: $("#txtRemarks").val()
+    }
+
+    $.ajax({
+        url: base_url + "Claim/ActionOnRequest",
+        method: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        data: JSON.stringify(claim),
+        "success": function (response) {
+            if (response.ok) {
+                Swal.fire({
+                    title: "Good job!",
+                    text: response.message,
+                    icon: "success",
+                    timer: 1500
+                });
+            }
+            else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: response.message,
+                    timer: 2000
+                });
+            }
+            setTimeout(function () {
+                location.reload()
+            }, 1500)
+        },
+        "error": function (err) {
+            console.log(err);
+        }
+    })
+}
+
+
+function ShowActionHistory(id) {
+    $.ajax({
+        url: base_url + "Claim/GetClaimHistory",
+        method: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+            "Authorization":"Bearer "+localStorage.getItem("token")
+        },
+        data: { id },
+        "success": function (response) {
+            console.log(response.data)
+        },
+        "error": function (err) {
+            console.log(err)
+        }
+    })
 }

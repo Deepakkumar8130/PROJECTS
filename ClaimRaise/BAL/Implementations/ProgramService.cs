@@ -65,6 +65,7 @@ namespace BAL.Implementations
                 user.Mobile = result["Mobile"].ToString();
                 user.UserName = result["Nm"].ToString();
                 user.ManagerId = result["Manager_Id"].ToString();
+                user.Role = result["Role"].ToString();
                 return user;
             }
             catch (Exception ex)

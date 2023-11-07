@@ -13,6 +13,7 @@ $(document).ready(function (){
     $("#btnLogout").click(function () {
         localStorage.removeItem("UserId");
         localStorage.removeItem("UserName");
+        localStorage.removeItem("UserRole");
         localStorage.removeItem("token");
         window.location.href = "/Account/Login";
     })

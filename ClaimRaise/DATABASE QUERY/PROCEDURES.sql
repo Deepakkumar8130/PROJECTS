@@ -250,3 +250,32 @@ END
 EXEC USP_UPDATE_CLAIM 1,1,1,'Manager','APPROVE BY MANAGER'
 ---------
 EXEC USP_UPDATE_CLAIM 1,1,4,'HR','APPROVE BY HR'
+
+
+
+/*----- PROC 6 -----*/
+/*----- GET CLAIM ACTION HISTORY -----*/
+CREATE PROCEDURE USP_GET_CLAIM_ACTION_HISTORY
+@claimId INT
+AS
+BEGIN
+	SELECT
+		CASE
+			WHEN eca.Action = 'Initiated' THEN 'Raise A Claim Request'
+			WHEN eca.Action = 'Pending At HR' THEN 'Approved By Manager'
+			WHEN eca.Action = 'Pending At Account' THEN 'Approved By HR'
+			WHEN eca.Action = 'Completed' THEN 'Claim Raised Successfully !!!'
+			ELSE eca.Action
+			END 'Action',
+		um.Nm 'Name',
+		eca.Remarks 'Remark',
+		eca.ActionDt 'Action Date'
+		FROM Employee_Claim_Action(NOLOCK) eca
+		INNER JOIN User_Master(NOLOCK) um
+		ON eca.ActionBy = um.Id;
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_CLAIM_ACTION_HISTORY 1
+

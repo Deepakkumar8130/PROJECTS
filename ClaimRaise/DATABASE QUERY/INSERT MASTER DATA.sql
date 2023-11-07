@@ -5,7 +5,7 @@ INSERT INTO Role_Master VALUES
 ('Employee',1),
 ('Manager',1),
 ('HR',1),
-('Accounts',1);
+('Account',1);
 
 /*----- ADD EMPLOYEES ------*/
 INSERT INTO User_Master (
