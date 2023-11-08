@@ -12,6 +12,7 @@
             <table class="table table-bordered" id="tblPendingRequest">
                 <thead>
                     <tr>
+                        <th>SNO.</th>
                         <th>Title</th>
                         <th>Claim By</th>
                         <th>Reason</th>
@@ -74,4 +75,43 @@
 
 
 
+
+<!-- modal -->
+<div class="modal fade" id="modalActionHistory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Claim Action History</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+               <table class="table table-bordered" id="tblActionHistory">
+                   <thead>
+                       <tr>
+                           <th>SNO.</th>
+                           <th>Action</th>
+                           <th>Action By</th>
+                           <th>Remark</th>
+                           <th>Action On</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+
+                   </tbody>
+               </table>
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
 <script src="~/js/claim/claimaction.js"></script>
+<link href="~/css/tblactionhistory.css" rel="stylesheet" />

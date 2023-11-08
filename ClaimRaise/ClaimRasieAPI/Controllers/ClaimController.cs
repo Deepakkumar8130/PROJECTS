@@ -180,5 +180,40 @@ namespace ClaimRasieAPI.Controllers
             }
             return Ok(response);
         }
+
+
+
+        [HttpPost]
+        [Route("GetClaimEvidence")]
+        public async Task<IActionResult> GetClaimEvidence([FromBody] string path)
+        {
+            try
+            {
+                var result = await _claimService.GetClaimEvidence(path);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = result.Item2;
+                    response.message = "Claim action updated successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
     }
 }

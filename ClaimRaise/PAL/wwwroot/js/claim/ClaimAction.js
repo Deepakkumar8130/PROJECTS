@@ -33,8 +33,13 @@ function GetAllPendingRequests() {
         },
         data: { "UserId": localStorage.getItem("UserId"), "Role": localStorage.getItem("UserRole") },
         "success": function (response) {
-            //console.log(response.data)
+            console.log(response.data)
+            response.data = response.data.map(function (item, index) {
+                item.serialNo = index + 1; // Serial numbers start from 1
+                return item;
+            });
             if (response.ok) {
+                $("#tblPendingRequest").DataTable().destroy()
                 $("#tblPendingRequest").DataTable({
                     "scrollY": "300px",  // Set the vertical scrolling height
                     "paging": true,      // Enable pagination
@@ -43,6 +48,7 @@ function GetAllPendingRequests() {
                     "info": false,         // Disable information display
                     data: response.data,
                     columns: [
+                        { data: "serialNo"},
                         { data: "claimTitle"},
                         { data: "employeeName"},
                         { data: "claimReason"},
@@ -51,8 +57,8 @@ function GetAllPendingRequests() {
                         { data: "claimExpenseDt"},
                         { data: "claimDescription" },
                         {
-                            data: "evidence", width: "70px", class: "text-center", render: function (data) {
-                                var btn = '<a class="btn btn-sm btn-info">View</a>'
+                            data: "claimEvidence", width: "70px", class: "text-center", render: function (claimEvidence) {
+                                var btn = `<a class="btn btn-sm btn-info" onclick="DownloadEvidence('${claimEvidence}')">View</a>`
                                 return btn;
                             }
                         },
@@ -133,6 +139,7 @@ function ApproveRejectRequest(action) {
 
 
 function ShowActionHistory(id) {
+    
     $.ajax({
         url: base_url + "Claim/GetClaimHistory",
         method: "GET",
@@ -143,7 +150,55 @@ function ShowActionHistory(id) {
         },
         data: { id },
         "success": function (response) {
-            console.log(response.data)
+            if (response.ok) {
+                response.data = response.data.map(function (item, index) {
+                    item.serialNo = index + 1; // Serial numbers start from 1
+                    return item;
+                });
+                $("#modalActionHistory").modal("show")
+                $("#tblActionHistory").DataTable().destroy();
+                $("#tblActionHistory").DataTable({
+                    data: response.data,
+                    columns: [
+                        { data: "serialNo" },
+                        { data: "action" },
+                        { data: "actionBy" },
+                        { data: "remark" },
+                        { data: "actionDt" },
+                    ]
+                })
+            }
+            else {
+                console.log(response.message)
+            }
+        },
+        "error": function (err) {
+            console.log(err)
+        }
+    })
+}
+
+
+
+function DownloadEvidence(path) {
+
+    console.log(path)
+    $.ajax({
+        url: base_url + "Claim/GetClaimEvidence",
+        method: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        data: JSON.stringify(path),
+        "success": function (response) {
+            if (response.ok) {
+                console.log(response.data)
+            }
+            else {
+                console.log(response.message)
+            }
         },
         "error": function (err) {
             console.log(err)

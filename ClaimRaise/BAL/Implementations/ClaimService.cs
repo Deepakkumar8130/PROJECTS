@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -285,6 +286,35 @@ namespace BAL.Implementations
             }
 
             return new Tuple<string, List<ClaimActionHistory>>(message, claimHistorys);
+        }
+
+
+        public async Task<Tuple<string, byte[]>> GetClaimEvidence(string path)
+        {
+            string message = string.Empty;
+            byte[] fileBytes = new byte[1024];
+            try
+            {
+                FileStream file = new FileStream(path, FileMode.OpenOrCreate);
+                fileBytes = new byte[file.Length];
+                await file.ReadAsync(fileBytes, 0, (int)file.Length);
+
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, byte[]>(message, fileBytes);
         }
     }
 }

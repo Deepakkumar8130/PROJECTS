@@ -52,7 +52,7 @@ function addClaimRequest() {
             contentType: false,
             processData: false,
             headers: {
-                "Authorization": "Bearer" + localStorage.getItem("token")
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
             data: data,
             "success": function (response) {
