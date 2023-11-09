@@ -298,6 +298,8 @@ namespace BAL.Implementations
                 FileStream file = new FileStream(path, FileMode.OpenOrCreate);
                 fileBytes = new byte[file.Length];
                 await file.ReadAsync(fileBytes, 0, (int)file.Length);
+                file.Close();
+                file.Dispose();
 
             }
             catch (SqlException ex)

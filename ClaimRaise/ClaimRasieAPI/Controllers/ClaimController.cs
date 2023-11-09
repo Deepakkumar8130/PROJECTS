@@ -77,6 +77,8 @@ namespace ClaimRasieAPI.Controllers
 
             FileStream stream = new FileStream(fullPath, FileMode.Create);
             file.CopyTo(stream);
+            stream.Close();
+            stream.Dispose();
             return "EvidenceFiles/" + fileName;
         }
 

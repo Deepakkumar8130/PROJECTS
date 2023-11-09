@@ -181,8 +181,7 @@ function ShowActionHistory(id) {
 
 
 function DownloadEvidence(path) {
-
-    console.log(path)
+    
     $.ajax({
         url: base_url + "Claim/GetClaimEvidence",
         method: "POST",
@@ -194,7 +193,22 @@ function DownloadEvidence(path) {
         data: JSON.stringify(path),
         "success": function (response) {
             if (response.ok) {
-                console.log(response.data)
+
+                 // Convert the base64-encoded binary data to a byte array
+                const binaryData = atob(response.data);
+                const byteArray = new Uint8Array(binaryData.length);
+
+                // Fill the byte array with binary data
+                for (let i = 0; i < binaryData.length; i++) {
+                    byteArray[i] = binaryData.charCodeAt(i);
+                }
+                
+                // Create a Blob from the byte array and prepare for download
+                const blob = new Blob([byteArray], { type: "application/octet/stream" });
+                const url = window.URL.createObjectURL(blob);
+                downloadURI(url, "evideence_file." + path.split(".")[1])
+                window.URL.revokeObjectURL(url);
+                
             }
             else {
                 console.log(response.message)
@@ -204,4 +218,14 @@ function DownloadEvidence(path) {
             console.log(err)
         }
     })
+}
+
+function downloadURI(uri, name) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }

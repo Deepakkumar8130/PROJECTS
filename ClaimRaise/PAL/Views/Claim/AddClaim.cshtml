@@ -29,6 +29,7 @@
                                     <option value="Food">Food</option>
                                     <option value="Petrol">Petrol</option>
                                     <option value="Mobile Recharge">Mobile Recharge</option>
+                                    <option value="Other">Other</option>
                                 </select>
                                 <span id="errClaimReason"></span>
                             </div>
@@ -54,7 +55,8 @@
                         <div class="col-6">
                             <div class="form-group" id="formGroupClaimEvidence">
                                 <label>Claim Evidence</label>
-                                <input type="file" class="form-control" id="txtClaimEvidence" />
+                                <input type="file" class="form-control" id="txtClaimEvidence" accept=".pdf, .jpg, .jpeg" />
+                                <small class="form-text text-muted">File format: PDF, JPG, or JPEG</small>
                                 <span id="errClaimEvidence"></span>
                             </div>
                         </div>

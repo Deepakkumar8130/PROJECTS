@@ -88,19 +88,19 @@ $("#txtClaimTitle").keyup(function () {
     isValid = requiredTextFilled("ClaimTitle", "claim title");
     if (!isValid) { return false }
 })
-$("#txtClaimReason").keyup(function () {
-    isValid = requiredTextFilled("ClaimReason", "claim title");
+$("#txtClaimReason").change(function () {
+    isValid = requiredTextFilled("ClaimReason", "claim reason");
     if (!isValid) { return false }
 })
 $("#txtClaimExpenseDt").keyup(function () {
-    isValid = requiredTextFilled("txtClaimExpenseDt", "claim title");
+    isValid = requiredTextFilled("txtClaimExpenseDt", "claim expense date");
     if (!isValid) { return false }
 })
 $("#txtClaimAmount").keyup(function () {
     isValid = requiredTextFilled("ClaimAmount", "claim amount");
     if (!isValid) { return false }
 })
-$("#txtClaimEvidence").keyup(function () {
+$("#txtClaimEvidence").change(function () {
     isValid = requiredTextFilled("ClaimEvidence", "evidence");
     if (!isValid) { return false }
 })
