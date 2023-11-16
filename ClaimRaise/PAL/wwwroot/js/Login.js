@@ -37,6 +37,13 @@ $(document).ready(function () {
             },
             "error": function (err) {
                 console.log(err);
+            }, beforeSend: function () {
+                // Show the loader
+                $("#loader-wrapper").show();
+            },
+            complete: function () {
+                // Hide the loader
+                $("#loader-wrapper").hide();
             }
         })
     })
