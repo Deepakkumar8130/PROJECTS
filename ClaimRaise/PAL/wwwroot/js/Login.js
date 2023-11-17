@@ -29,7 +29,7 @@ $(document).ready(function () {
                    
                     setTimeout(function () {
                         window.location.href = "/Home/Index"
-                    }, 1000);
+                    }, 500);
                 }
                 else {
                     $("#msg").html(response.message).css("color", "red");

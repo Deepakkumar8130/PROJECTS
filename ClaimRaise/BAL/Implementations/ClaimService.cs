@@ -318,5 +318,61 @@ namespace BAL.Implementations
 
             return new Tuple<string, byte[]>(message, fileBytes);
         }
+
+
+        public async Task<Tuple<string, List<ClaimTransaction>>> GetClaimTransactions(int UserId)
+        {
+            string message = string.Empty;
+            List<ClaimTransaction> claimTransactions = new List<ClaimTransaction>();
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_GET_CLAIMS_TRANSACTION_DATA";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var parameter = new SqlParameter();
+
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@UserId";
+                parameter.SqlValue = UserId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+                var result = command.ExecuteReader();
+
+                while (result.Read())
+                {
+                    ClaimTransaction claimTransaction = new ClaimTransaction();
+                    claimTransaction.TransactionNo = result["Transaction_No"].ToString();
+                    claimTransaction.ClaimTitle = result["Claim_Title"].ToString();
+                    claimTransaction.ClaimReason = result["Claim_Reason"].ToString();
+                    claimTransaction.ClaimAmount = result["Amount"].ToString();
+                    claimTransaction.ClaimDescription = result["Claim_Description"].ToString();
+                    claimTransaction.ClaimDt = result["ClaimDt"].ToString();
+                    claimTransaction.TransactionDt = result["TransactionDt"].ToString();
+                    claimTransaction.ApprovedBy = result["ApprovedBy"].ToString();
+
+                    claimTransactions.Add(claimTransaction);
+                }
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, List<ClaimTransaction>>(message, claimTransactions);
+        }
     }
 }

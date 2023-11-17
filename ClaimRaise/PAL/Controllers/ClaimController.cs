@@ -13,6 +13,10 @@ namespace PAL.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> ShowClaimTransaction()
+        {
+            return View();
+        }
         
         //public async Task<IActionResult> DownloadEvidence(string path)
         //{

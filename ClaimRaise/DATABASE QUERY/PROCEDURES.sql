@@ -46,6 +46,7 @@ BEGIN
 	where tbl.UserId = @userId
 	AND tbl.Status = 1 
 	AND prog.Status = 1
+	OR tbL.RoleId IN (SELECT Id FROM Role_Employee_Mapping(NOLOCK) WHERE EmpId = @userId)
 	ORDER BY prog.Display_Sequence;
 END
 
@@ -237,6 +238,10 @@ BEGIN
 											@remark,
 											1
 										);
+		IF @role = 'Account'
+			BEGIN
+				EXEC USP_CLAIM_TRANSACTION_ENTRY @userId, @claimId
+			END
 		COMMIT TRAN Trn_Update_Claim;
 		END TRY
 		BEGIN CATCH
@@ -279,3 +284,69 @@ END
 /*----- FOR CHECKING-----*/
 EXEC USP_GET_CLAIM_ACTION_HISTORY 1
 
+
+
+/*----- PROC 7 -----*/
+/*----- CLAIM TRANSACTION ENTRY -----*/
+CREATE PROCEDURE USP_CLAIM_TRANSACTION_ENTRY
+@UserId INT,--THIS USER ID IS WHO APPROVED THIS CLAIM LIKE MANAGER, HR, ACCOUNT SO ON.--
+@ClaimId INT
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRAN claim_tran
+			DECLARE @amount DECIMAL;
+			SELECT @amount = Amount FROM Claim_Master(NOLOCK) WHERE Id = @ClaimId;
+			INSERT INTO Employee_Claim_Transaction(
+									Transaction_No,
+									Employee_Id,
+									Amount,
+									TransactionDt,
+									CliamId,
+									Status
+									) VALUES(
+									4548,
+									@UserId,
+									@amount,
+									GETDATE(),
+									@ClaimId,
+									1
+									);
+		COMMIT TRAN claim_tran;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN claim_tran;
+	END CATCH
+END
+
+
+/*----- FOR CHECKING-----*/
+/*-- USP_CLAIM_TRANSACTION_ENTRY @UserId INT, @ClaimId INT --*/
+EXEC USP_CLAIM_TRANSACTION_ENTRY 1,1
+
+/*----- PROC 8 -----*/
+/*-----GET CLAIM TRANSACTION DATA -----*/
+CREATE PROCEDURE USP_GET_CLAIMS_TRANSACTION_DATA
+@UserId INT
+AS
+BEGIN
+	SELECT
+		emt.Transaction_No,
+		cm.Claim_Title,
+		cm.Claim_Reason,
+		cm.Amount,
+		cm.Claim_Description,
+		cm.ClaimDt,
+		emt.TransactionDt,
+		um.Nm ApprovedBy
+		FROM Employee_Claim_Transaction(NOLOCK) emt
+		INNER JOIN Claim_Master(NOLOCK) cm
+		ON emt.CliamId = cm.Id
+		INNER JOIN User_Master(NOLOCK) um
+		on emt.Employee_Id = um.Id
+		WHERE cm.UserId = @UserId; 
+END
+
+/*----- FOR CHECKING-----*/
+/*-- USP_GET_CLAIMS_TRANSACTION_DATA @UserId INT--*/
+EXEC USP_GET_CLAIMS_TRANSACTION_DATA 2

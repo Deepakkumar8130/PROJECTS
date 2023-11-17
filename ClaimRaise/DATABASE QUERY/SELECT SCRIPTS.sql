@@ -8,3 +8,4 @@ SELECT*FROM Claim_Master;
 SELECT*FROM Employee_Claim_Role_Master;
 SELECT*FROM Employee_Claim_Master_Mapping;
 SELECT*FROM Employee_Claim_Action
+SELECT*FROM Employee_Claim_Transaction

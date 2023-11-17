@@ -54,7 +54,8 @@ INSERT INTO Program_Master (
 ('Add Claim','Claim/AddClaim','Add new claim',0,1),
 ('Employee Claims','Claim/ShowClaim','show claim request',1,1),
 ('Dashboard','Home/Dashboard','dashboard',2,1),
-('Show Claim Status','Claim/ClaimStatus','show claim',3,1);
+('Show Claim Status','Claim/ClaimStatus','show claim',3,1),
+('Claim Transactions','Claim/ShowClaimTransaction','show claim',3,1);
 
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
@@ -77,7 +78,8 @@ VALUES
 (1,5,NULL,1),
 (2,5,NULL,1),
 (3,5,NULL,1),
-(4,5,NULL,1);
+(4,5,NULL,1),
+(5,NULL,1,1);
 
 
 /*----- ASSIGN ROLE STATUS -----*/
