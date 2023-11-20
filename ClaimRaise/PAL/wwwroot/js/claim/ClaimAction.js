@@ -41,11 +41,11 @@ function GetAllPendingRequests() {
             if (response.ok) {
                 $("#tblPendingRequest").DataTable().destroy()
                 $("#tblPendingRequest").DataTable({
-                    "scrollY": "300px",  // Set the vertical scrolling height
-                    "paging": true,      // Enable pagination
-                    "lengthChange": false, // Disable the number of rows per page change
-                    "searching": false,   // Disable search box
-                    "info": false,         // Disable information display
+                    //"scrollY": "300px",  // Set the vertical scrolling height
+                    //"paging": true,      // Enable pagination
+                    //"lengthChange": false, // Disable the number of rows per page change
+                    //"searching": false,   // Disable search box
+                    //"info": false,         // Disable information display
                     data: response.data,
                     columns: [
                         { data: "serialNo"},

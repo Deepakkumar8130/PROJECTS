@@ -17,6 +17,7 @@ function GetClaimTransaction() {
             if (response.ok) {
                 $("#tblClaimTransactions").DataTable().destroy();
                 $("#tblClaimTransactions").DataTable({
+
                     data: response.data,
                     columns: [
                         { data: "transactionNo" },
