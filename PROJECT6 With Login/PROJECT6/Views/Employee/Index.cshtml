@@ -67,24 +67,24 @@
                     </div>
 
                     <div class="form-floating py-2 col-12">
-                        <input type="text" class="form-control border-0 shadow" asp-for="Name" id="txtName" />
+                        <input type="text" class="form-control border-0 shadow" asp-for="Name" onkeyup="requiredTextField('Name','name')" id="txtName" />
                         <label asp-for="Name" class="ms-3"></label>
                         <span id="errName"></span>
                     </div>
 
                     <div class="form-floating py-2 col-12">
-                        <input type="text" class="form-control border-0 shadow" asp-for="Email" onkeyup="requiredTextField('Name','name')" id="txtEmail" />
+                        <input type="text" class="form-control border-0 shadow" onkeyup="Validate('Email','email')" asp-for="Email" id="txtEmail" />
                         <label asp-for="Email" class="ms-3">Email</label>
                         <span id="errEmail"></span>
                     </div>
                     <div class="form-floating py-2 col-12">
-                        <input type="text" asp-for="Mobile" class="form-control border-0 shadow" onkeyup="Validate('Mobile','mobile number')" onkeyup="Validate('Email','email')" id="txtMobile" />
+                        <input type="text" asp-for="Mobile" class="form-control border-0 shadow" onkeyup="Validate('Mobile','mobile number')"  id="txtMobile" />
                         <label asp-for="Mobile" class="ms-3">Mobile No.</label>
                         <span id="errMobile"></span>
                     </div>
 
                     <div class="form-floating py-2 col-12">
-                        <input type="date" asp-for="DateOfBirth" class="form-control border-0 shadow" id="DOB" />
+                        <input type="date" asp-for="DateOfBirth" class="form-control border-0 shadow"  id="DOB" />
                         <label asp-for="DateOfBirth" class="ms-3"></label>
                     </div><div class="form-floating py-2 col-12">
                         <div id="gender">
