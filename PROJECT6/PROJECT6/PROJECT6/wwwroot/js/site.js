@@ -193,14 +193,14 @@ function AddImage() {
     else {
         var imageElement = document.getElementById("PrevImg");
         image = imageElement.src;
-        profileimg = image.substring(image.lastIndexOf('/') + 1).toLowerCase();
+        profileimg = image.substring(image.lastIndexOf('/') + 1).replace("%20", " ");
         console.log(profileimg)
         Add(profileimg)
     }
 }
 
 function EditRecord(id) {
-    alert("OK")
+    alert("Do You Want Update Profile?")
     $("#exampleModal").modal("show")
     $("#btnSubmit").val("Update")
     $.get("/Employee/GetEmployee", { "id": id }, function (response) {
