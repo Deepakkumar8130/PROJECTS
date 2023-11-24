@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using MAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IProgramService, ProgramService>();
 builder.Services.AddTransient<IClaimService, ClaimService>();
+builder.Services.AddTransient<ICRUD<UserServiceModel>, UserService>();
 
 
 

@@ -46,14 +46,14 @@ BEGIN
 	where tbl.UserId = @userId
 	AND tbl.Status = 1 
 	AND prog.Status = 1
-	OR tbL.RoleId IN (SELECT Id FROM Role_Employee_Mapping(NOLOCK) WHERE EmpId = @userId)
+	OR tbL.RoleId IN (SELECT RoleId FROM Role_Employee_Mapping(NOLOCK) WHERE EmpId = @userId)
 	ORDER BY prog.Display_Sequence;
 END
 
 /*----- FOR CHECKING-----*/
 EXEC USP_GET_PROGRAMS 1
 ---------
-EXEC USP_GET_PROGRAMS 2
+EXEC USP_GET_PROGRAMS 6
 
 
 /*----- PROC 3 -----*/
@@ -354,7 +354,96 @@ EXEC USP_GET_CLAIMS_TRANSACTION_DATA 2
 
 /*----- PROC 10 -----*/
 /*----- USER MANAGE -----*/
-CREATE PROCEDURE USP_USER_MANAGED
+CREATE PROCEDURE USP_MANAGED_USER
+@Action VARCHAR(20), --- This action like Create/Update/Get ---
+@Id INT = NULL,
+@Name VARCHAR(100) = NULL,
+@Email VARCHAR(100) = NULL,
+@Mobile VARCHAR(100) = NULL,
+@Password VARCHAR(100) = NULL,
+@Manager INT = NULL,
+@Status TINYINT = NULL
 AS
 BEGIN
+	IF @Action = 'create'
+		BEGIN
+			INSERT INTO User_Master (
+									Nm,
+									Email,
+									Mobile,
+									Password,
+									Manager_Id,
+									Status
+									)VALUES(
+									@Name,
+									@Email,
+									@Mobile,
+									DBO.HashPassword(@Password),
+									@Manager,
+									@Status);
+			SELECT 1 AS RESULT;
+		END
+	ELSE IF @Action = 'update'
+		BEGIN
+			UPDATE User_Master SET
+								Nm = @Name,
+								Email = @Email,
+								Mobile = @Mobile,
+								Manager_Id = @Manager,
+								Status = @Status
+								WHERE Id = @Id;
+			SELECT 1 AS RESULT;
+		END
+	ELSE IF @Action = 'get'
+		BEGIN
+			SELECT
+				Id, Nm Name, Email, Mobile, Manager_Id, Status
+				FROM User_Master
+				WHERE Id = @Id
+		END
+	ELSE IF @Action = 'getall'
+		BEGIN
+			SELECT
+				U1.Id,
+				U1.Nm Name,
+				U1.Email,
+				U1.Mobile,
+				U2. Nm Manager,
+				CASE WHEN U1.Status = 1 THEN 'Active'
+					ELSE 'Inactive'
+				END Status
+				FROM User_Master U1
+				LEFT JOIN User_Master U2
+				ON U1.Manager_Id = U2.Id
+				WHERE U1.Id<>@Id
+		END
 END
+
+
+/*----- FOR CHECKING-----*/
+/*--- CREATE ---*/
+/* EXEC USP_MANAGED_USER @Action='create',
+					  @Name = 'Sunil Sir',
+					  @Email = 'sun123@gmail.com',
+					  @Mobile = '1234567890',
+					  @Password = 'sun@123',
+					  @Manager = 1,
+					  @Status = 1;
+*/
+/*--- UPDATE ---*/
+/* EXEC USP_MANAGED_USER @Action='update',
+					  @Id = 6,
+					  @Name = 'Sunil Sir',
+					  @Email = 'sunil123@gmail.com',
+					  @Mobile = '1234567890',
+					  @Manager = 1,
+					  @Status = 1;
+*/
+/*--- GET ---*/
+/* EXEC USP_MANAGED_USER @Action='get',
+					   @Id = 4
+*/
+/*--- GETALL ---*/
+/* EXEC USP_MANAGED_USER @Action='getall',
+					  @Id = 3
+*/		

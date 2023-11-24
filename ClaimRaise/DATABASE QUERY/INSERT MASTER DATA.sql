@@ -2,10 +2,11 @@
 
 /*----- ADD ROLES ------*/
 INSERT INTO Role_Master VALUES
-('Employee',1),
+('Account',1),
 ('Manager',1),
 ('HR',1),
-('Account',1);
+('Account',1),
+('Admin',1);
 
 /*----- ADD EMPLOYEES ------*/
 INSERT INTO User_Master (
@@ -20,7 +21,8 @@ INSERT INTO User_Master (
 ('Rahul Kumar','rahul123@gmail.com','73483943',DBO.HashPassword('rh@123'),NULL,1),
 ('Mayank Kumar','mayank0023@gmail.com','88483943',DBO.HashPassword('mank@123'),NULL,1),
 ('Sumit Kumar','smt03@gmail.com','78483943',DBO.HashPassword('smt@123'),NULL,1),
-('Pawan Kumar','pawan123@gmail.com','87483943',DBO.HashPassword('pawan@123'),NULL,1);
+('Pawan Kumar','pawan123@gmail.com','87483943',DBO.HashPassword('pawan@123'),NULL,1),
+('Sunil Sir','sunil123@gmail.com','87483943',DBO.HashPassword('sun@123'),NULL,1);
 
 
 /*----- ASIGN MANAGERS ------*/
@@ -40,7 +42,8 @@ INSERT INTO Role_Employee_Mapping (
 (1,3,1),
 (2,1,1),
 (3,4,1),
-(4,5,1);
+(4,5,1),
+(5,6,1);
 
 
 /*----- ADD PROGRAMS ------*/
@@ -55,7 +58,8 @@ INSERT INTO Program_Master (
 ('Employee Claims','Claim/ShowClaim','show claim request',1,1),
 ('Dashboard','Home/Dashboard','dashboard',2,1),
 ('Show Claim Status','Claim/ClaimStatus','show claim',3,1),
-('Claim Transactions','Claim/ShowClaimTransaction','show claim',3,1);
+('Claim Transactions','Claim/ShowClaimTransaction','show claim',3,1),
+('Managed User','User/ManageUser','Users Managed',4,1);
 
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
@@ -79,7 +83,8 @@ VALUES
 (2,5,NULL,1),
 (3,5,NULL,1),
 (4,5,NULL,1),
-(5,NULL,1,1);
+(5,NULL,1,1),
+(6,NUll,5,1);
 
 
 /*----- ASSIGN ROLE STATUS -----*/
