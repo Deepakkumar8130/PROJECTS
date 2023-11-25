@@ -2,11 +2,13 @@
 using BAL.Interfaces;
 using ClaimAPI.Models;
 using MAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClaimRasieAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserManagedController : ControllerBase

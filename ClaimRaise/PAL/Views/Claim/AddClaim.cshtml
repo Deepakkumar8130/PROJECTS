@@ -39,7 +39,7 @@
                         <div class="col-6">
                             <div class="form-group" id="formGroupClaimAmount">
                                 <label>Claim Amount</label>
-                                <input type="number" class="form-control" id="txtClaimAmount" />
+                                <input type="number" class="form-control" min="0" id="txtClaimAmount" />
                                 <span id="errClaimAmount"></span>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row d-flex justify-content-around ">
-                        <button type="button" class="btn w-25 btn-sm btn-primary" id="btnFormReset">Reset</button>
-                        <button type="button" class="btn w-25 btn-sm btn-success" id="btnClaimSubmit">Submit</button>
+                    <div class="row d-flex justify-content-around m-3">
+                        <button type="button" class="btn w-25 btn-sm btn-primary p-2" id="btnFormReset">Reset</button>
+                        <button type="button" class="btn w-25 btn-sm btn-success p-2" id="btnClaimSubmit">Submit</button>
                 </div>
                 </form>
             </div>
