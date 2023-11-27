@@ -22,7 +22,7 @@ INSERT INTO User_Master (
 ('Mayank Kumar','mayank0023@gmail.com','88483943',DBO.HashPassword('mank@123'),NULL,1),
 ('Sumit Kumar','smt03@gmail.com','78483943',DBO.HashPassword('smt@123'),NULL,1),
 ('Pawan Kumar','pawan123@gmail.com','87483943',DBO.HashPassword('pawan@123'),NULL,1),
-('Sunil Sir','sunil123@gmail.com','87483943',DBO.HashPassword('sun@123'),NULL,1);
+('Sunil Sir','sunilSir123@gmail.com','87483943',DBO.HashPassword('sun@123'),NULL,1);
 
 
 /*----- ASIGN MANAGERS ------*/
@@ -59,32 +59,53 @@ INSERT INTO Program_Master (
 ('Dashboard','Home/Dashboard','dashboard',2,1),
 ('Show Claim Status','Claim/ClaimStatus','show claim',3,1),
 ('Claim Transactions','Claim/ShowClaimTransaction','show claim',3,1),
-('Managed User','User/ManageUser','Users Managed',4,1);
-
+('Managed User','User/ManageUser','Users Managed',4,1),
+('Managed Roles','Role/ManageRole','Roles Managed',5,1);
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
 INSERT INTO Tbl_Rights(Programe_id,UserId,RoleId,Status)
 VALUES
-(1,1,NULL,1),
-(2,1,NULL,1),
-(3,1,NULL,1),
-(4,1,NULL,1),
-(1,2,NULL,1),
-(4,2,NULL,1),
-(1,3,NULL,1),
-(2,3,NULL,1),
-(3,3,NULL,1),
-(4,3,NULL,1),
-(1,4,NULL,1),
-(2,4,NULL,1),
-(3,4,NULL,1),
-(4,4,NULL,1),
-(1,5,NULL,1),
-(2,5,NULL,1),
-(3,5,NULL,1),
-(4,5,NULL,1),
+/*--- EMPLOYEE ---*/
+(1,NULL,1,1),
+(3,NULL,1,1),
+(4,NULL,1,1),
 (5,NULL,1,1),
-(6,NUll,5,1);
+/*--- MANAGER ---*/
+(1,NULL,2,1),
+(2,NULL,2,1),
+(3,NULL,2,1),
+(4,NULL,2,1),
+(5,NULL,2,1),
+/*--- HR ---*/
+(1,NULL,3,1),
+(2,NULL,3,1),
+(3,NULL,3,1),
+(4,NULL,3,1),
+(5,NULL,3,1),
+/*--- ACCOUNT ---*/
+(1,NULL,4,1),
+(2,NULL,4,1),
+(3,NULL,4,1),
+(4,NULL,4,1),
+(5,NULL,4,1),
+/*--- ADMIN ---*/
+(1,NULL,5,1),
+(2,NULL,5,1),
+(3,NULL,5,1),
+(4,NULL,5,1),
+(5,NULL,5,1),
+(6,NULL,5,1),
+(7,NULL,5,1),
+/*--- SUPER ADMIN ---*/
+(1,NULL,6,1),
+(2,NULL,6,1),
+(3,NULL,6,1),
+(4,NULL,6,1),
+(5,NULL,6,1),
+(6,NULL,6,1),
+(7,NULL,6,1);
+
+
 
 
 /*----- ASSIGN ROLE STATUS -----*/

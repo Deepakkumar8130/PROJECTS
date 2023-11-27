@@ -12,26 +12,25 @@ namespace ClaimRasieAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserManagedController : ControllerBase
+    public class RoleManagedController : ControllerBase
     {
-        private ICRUD<UserServiceModel> _userService { get; set; }
+        private IRole _roleService { get; set; }
         private IEntity _entity { get; set; }
         private APIResponse response = new APIResponse();
 
-        public UserManagedController(ICRUD<UserServiceModel> userService, IEntity entity)
+        public RoleManagedController(IRole roleService)
         {
-            _userService = userService;
-            _entity = entity;
+            _roleService = roleService;
         }
 
 
         [HttpGet]
-        [Route("GetAllUsers")]
-        public async Task<IActionResult> GetAllUsers(int UserId)
+        [Route("GetAllRoles")]
+        public async Task<IActionResult> GetAllRoles()
         {
             try
             {
-                var result = await _userService.GetData(UserId);
+                var result = await _roleService.GetData();
 
                 if (string.IsNullOrEmpty(result.Item1))
                 {
@@ -57,15 +56,15 @@ namespace ClaimRasieAPI.Controllers
             }
             return Ok(response);
         }
-        
-        
+
+
         [HttpGet]
-        [Route("GetUserById")]
-        public async Task<IActionResult> GetUserById(int UserId)
+        [Route("GetRoleById")]
+        public async Task<IActionResult> GetRoleById(int RoleId)
         {
             try
             {
-                var result = await _userService.GetSingleUSer(UserId);
+                var result = await _roleService.GetSingleRole(RoleId);
 
                 if (string.IsNullOrEmpty(result.Item1))
                 {
@@ -94,21 +93,21 @@ namespace ClaimRasieAPI.Controllers
 
 
         [HttpPost]
-        [Route("RegisteredUser")]
-        public async Task<IActionResult> RegisteredUser()
+        [Route("RegisteredRole")]
+        public async Task<IActionResult> AddRole()
         {
             try
             {
-                var formData = Request.Form["User"];
-                var user = JsonConvert.DeserializeObject<UserServiceModel>(formData);
-                var result = await _userService.AddData(user);
+                var formData = Request.Form["Role"];
+                var role = JsonConvert.DeserializeObject<Role>(formData);
+                var result = await _roleService.AddData(role);
 
                 if (string.IsNullOrEmpty(result))
                 {
                     response.status = 200;
                     response.ok = true;
                     response.data = null;
-                    response.message = "Data Registered successfully!";
+                    response.message = "Role Registered successfully!";
                 }
                 else
                 {
@@ -129,14 +128,14 @@ namespace ClaimRasieAPI.Controllers
         }
 
         [HttpPost]
-        [Route("UpdateUser")]
+        [Route("UpdateRole")]
         public async Task<IActionResult> UpdateUser()
         {
             try
             {
-                var formData = Request.Form["User"];
-                var user = JsonConvert.DeserializeObject<UserServiceModel>(formData);
-                var result = await _userService.UpdateData(user);
+                var formData = Request.Form["Role"];
+                var role = JsonConvert.DeserializeObject<Role>(formData);
+                var result = await _roleService.UpdateData(role);
 
                 if (string.IsNullOrEmpty(result))
                 {

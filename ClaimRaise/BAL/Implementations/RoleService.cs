@@ -12,24 +12,24 @@ using System.Threading.Tasks;
 
 namespace BAL.Implementations
 {
-    public class UserService : ICRUD<UserServiceModel>,IEntity
+    public class RoleService : IRole
     {
 
         private ApplicationDbContext _context { get; }
 
-        public UserService(ApplicationDbContext context)
+        public RoleService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Tuple<string, List<UserServiceModel>>> GetData(int UserId)
+        public async Task<Tuple<string, List<Role>>> GetData()
         {
             string message = string.Empty;
-            List<UserServiceModel> listsOfUsers = new List<UserServiceModel>();
+            List<Role> listsOfRoles = new List<Role>();
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_MANAGED_USER";
+                command.CommandText = "USP_MANAGED_ROLE";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -41,27 +41,16 @@ namespace BAL.Implementations
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
 
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Id";
-                parameter.SqlValue = UserId;
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-
                 _context.Database.OpenConnection();
                 var result = command.ExecuteReader();
 
                 while (result.Read())
                 {
-                    UserServiceModel user = new UserServiceModel();
-                    user.Id = result["Id"].ToString();
-                    user.UserName = result["Name"].ToString();
-                    user.Email = result["Email"].ToString();
-                    user.Mobile = result["Mobile"].ToString();
-                    user.ManagerName = result["Manager"].ToString();
-                    user.Status = result["Status"].ToString();
-                    listsOfUsers.Add(user);
+                    Role role = new Role();
+                    role.Id = Convert.ToInt32(result["Id"]);
+                    role.RoleName = result["Role"].ToString();
+                    role.Status = result["Status"].ToString();
+                    listsOfRoles.Add(role);
                 }
             }
             catch (SqlException ex)
@@ -78,18 +67,18 @@ namespace BAL.Implementations
                 _context.Database.CloseConnection();
             }
 
-            return new Tuple<string, List<UserServiceModel>>(message, listsOfUsers);
+            return new Tuple<string, List<Role>>(message, listsOfRoles);
         }
 
 
-        public async Task<Tuple<string, UserServiceModel>> GetSingleUSer(int UserId)
+        public async Task<Tuple<string, Role>> GetSingleRole(int RoleId)
         {
             string message = string.Empty;
-            UserServiceModel user = new UserServiceModel();
+            Role role = new Role();
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_MANAGED_USER";
+                command.CommandText = "USP_MANAGED_ROLE";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -103,7 +92,7 @@ namespace BAL.Implementations
 
                 parameter = new SqlParameter();
                 parameter.ParameterName = "@Id";
-                parameter.SqlValue = UserId;
+                parameter.SqlValue = RoleId;
                 parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
@@ -112,13 +101,10 @@ namespace BAL.Implementations
                 _context.Database.OpenConnection();
                 var result = command.ExecuteReader();
                 result.Read();
-                user.Id = result["Id"].ToString();
-                user.UserName = result["Name"].ToString();
-                user.Email = result["Email"].ToString();
-                user.Mobile = result["Mobile"].ToString();
-                user.ManagerId = result["Manager_Id"].ToString();
-                user.Status = result["Status"].ToString();
-                
+                role.Id = Convert.ToInt32(result["Id"]);
+                role.RoleName = result["Role"].ToString();
+                role.Status = result["Status"].ToString();
+
             }
             catch (SqlException ex)
             {
@@ -134,18 +120,18 @@ namespace BAL.Implementations
                 _context.Database.CloseConnection();
             }
 
-            return new Tuple<string, UserServiceModel>(message, user);
+            return new Tuple<string, Role>(message, role);
         }
 
 
-        public async Task<string> AddData(UserServiceModel user)
+        public async Task<string> AddData(Role role)
         {
             string message = string.Empty;
 
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_MANAGED_USER";
+                command.CommandText = "USP_MANAGED_ROLE";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -158,43 +144,15 @@ namespace BAL.Implementations
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
-                parameter.ParameterName = "@Name";
-                parameter.SqlValue = user.UserName;
+                parameter.ParameterName = "@RoleName";
+                parameter.SqlValue = role.RoleName;
                 parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Email";
-                parameter.SqlValue = user.Email;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Mobile";
-                parameter.SqlValue = user.Mobile;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Password";
-                parameter.SqlValue = user.Password;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Manager";
-                parameter.SqlValue = user.ManagerId;
-                parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
                 parameter.ParameterName = "@Status";
-                parameter.SqlValue = user.Status;
+                parameter.SqlValue = role.Status;
                 parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
@@ -220,14 +178,14 @@ namespace BAL.Implementations
         }
 
 
-        public async Task<string> UpdateData(UserServiceModel user)
+        public async Task<string> UpdateData(Role role)
         {
             string message = string.Empty;
 
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_MANAGED_USER";
+                command.CommandText = "USP_MANAGED_ROLE";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -241,49 +199,21 @@ namespace BAL.Implementations
 
                 parameter = new SqlParameter();
                 parameter.ParameterName = "@Id";
-                parameter.SqlValue = user.Id;
+                parameter.SqlValue = role.Id;
                 parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
-                parameter.ParameterName = "@Name";
-                parameter.SqlValue = user.UserName;
+                parameter.ParameterName = "@RoleName";
+                parameter.SqlValue = role.RoleName;
                 parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Email";
-                parameter.SqlValue = user.Email;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Mobile";
-                parameter.SqlValue = user.Mobile;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Password";
-                parameter.SqlValue = user.Password;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Manager";
-                parameter.SqlValue = user.ManagerId;
-                parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
                 parameter.ParameterName = "@Status";
-                parameter.SqlValue = user.Status;
+                parameter.SqlValue = role.Status;
                 parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 command.Parameters.Add(parameter);
@@ -309,7 +239,7 @@ namespace BAL.Implementations
         }
 
 
-        public async Task<Tuple<string, List<Entity>>> GetEntities(int UserId, string role)
+       /* public async Task<Tuple<string, List<Entity>>> GetEntities(int UserId, string role)
         {
             string message = string.Empty;
             List<Entity> RoleEntities = new List<Entity>();
@@ -345,7 +275,7 @@ namespace BAL.Implementations
                     entity.Name = result["Name"].ToString();
                     RoleEntities.Add(entity);
                 }
-                
+
 
             }
             catch (SqlException ex)
@@ -363,7 +293,7 @@ namespace BAL.Implementations
             }
 
             return new Tuple<string, List<Entity>>(message, RoleEntities);
-        }
+        }*/
 
     }
 }

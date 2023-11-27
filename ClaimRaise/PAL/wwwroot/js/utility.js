@@ -1,5 +1,5 @@
 ﻿
-function requiredTextFilled(control, ErrorMessage, validationtype="all") {
+function requiredTextFilled(control, ErrorMessage, validationtype = "all") {
     var id = "#txt" + control;
     var err = "#err" + control;
     var formGroup = "#formGroup" + control;
@@ -28,7 +28,9 @@ function requiredTextFilled(control, ErrorMessage, validationtype="all") {
 function GetRegx(type) {
     var regx = /.+/;
     switch (type) {
-        case "Email":
+        case "EmailAddress":
+            regx = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
+            break; case "Email":
             regx = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
             break;
         case "Mobile":
@@ -45,3 +47,69 @@ function GetRegx(type) {
     return regx;
 }
 
+
+function FillDropDownList(url, params, ddlId, async = true) {
+    var ddl = "<option value='-1'>Select</option>";
+    $.ajax({
+        url: base_url + url,
+        method: "GET",
+        contentType: JSON,
+        async: async,
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        data: { "UserId": localStorage.getItem("UserId"), "Role": params },
+        "success": function (response) {
+            //console.log(response.data)
+            if (response.ok) {
+                response.data.forEach(function (item, i) {
+                    ddl += "<option value="+item.id+">"+item.name+"</option>"
+                })
+                $("#" + ddlId).html(ddl);
+            }
+        },
+        "error": function (err) {
+            console.log(err)
+        }
+    })
+}
+
+
+
+function requiredSelectFiled(control, ErrorMessage) {
+    var id = "#ddl" + control
+    var err = "#err" + control
+    var formGroup = "#formGroup" + control
+    var txtVal = $(id).val()
+    if (txtVal == "" || txtVal == null || txtVal == "-1") {
+        $(err).html("Please select " + ErrorMessage).addClass("error-control")
+        $(formGroup).addClass("error-control")
+        return false
+    }
+    else {
+
+        $(err).html("").removeClass("error-control")
+        $(formGroup).removeClass("error-control")
+        return true
+    }
+}
+
+function comparePassword(control1, control2) {
+    var id = "#txt" + control1
+    var id1 = "#txt" + control2
+    var err = "#err" + control2
+    var formGroup = "#formGroup" + control2
+    var txtVal = $(id).val()
+    var txtVal1 = $(id1).val()
+    if (txtVal != txtVal1) {
+        $(err).html("Confirm password not matched !").addClass("text-danger")
+        $(formGroup).addClass("text-danger")
+        return false
+    }
+    else {
+
+        $(err).html("").removeClass("text-danger")
+        $(formGroup).removeClass("text-danger")
+        return true
+    }
+}

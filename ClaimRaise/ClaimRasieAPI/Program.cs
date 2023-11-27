@@ -37,6 +37,8 @@ builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IProgramService, ProgramService>();
 builder.Services.AddTransient<IClaimService, ClaimService>();
 builder.Services.AddTransient<ICRUD<UserServiceModel>, UserService>();
+builder.Services.AddTransient<IEntity, UserService>();
+builder.Services.AddTransient<IRole, RoleService>();
 
 
 

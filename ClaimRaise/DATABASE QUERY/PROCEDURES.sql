@@ -101,7 +101,7 @@ BEGIN
 			BEGIN
 			  THROW 50000, 'Claim already in pending', 1
 			--RAISERROR('Claim Already In Pending', 1, 1);
-			RETURN;
+			  RETURN;
 			END
 		BEGIN TRY
 			BEGIN TRAN Trn_Claim;
@@ -365,58 +365,75 @@ CREATE PROCEDURE USP_MANAGED_USER
 @Status TINYINT = NULL
 AS
 BEGIN
-	IF @Action = 'create'
+	IF @Action = 'create' AND EXISTS (SELECT 1 FROM User_Master WHERE Email = @Email)
 		BEGIN
-			INSERT INTO User_Master (
-									Nm,
-									Email,
-									Mobile,
-									Password,
-									Manager_Id,
-									Status
-									)VALUES(
-									@Name,
-									@Email,
-									@Mobile,
-									DBO.HashPassword(@Password),
-									@Manager,
-									@Status);
-			SELECT 1 AS RESULT;
+			THROW 50000, 'User Email Already Exist', 1;
+			RETURN;
 		END
-	ELSE IF @Action = 'update'
+	IF @Action = 'update' AND EXISTS (SELECT 1 FROM User_Master WHERE Email = @Email AND Id <> @Id)
 		BEGIN
-			UPDATE User_Master SET
-								Nm = @Name,
-								Email = @Email,
-								Mobile = @Mobile,
-								Manager_Id = @Manager,
-								Status = @Status
-								WHERE Id = @Id;
-			SELECT 1 AS RESULT;
+			THROW 50000, 'User Email Already Exist For Another Someone', 1;
+			RETURN;
 		END
-	ELSE IF @Action = 'get'
-		BEGIN
-			SELECT
-				Id, Nm Name, Email, Mobile, Manager_Id, Status
-				FROM User_Master
-				WHERE Id = @Id
-		END
-	ELSE IF @Action = 'getall'
-		BEGIN
-			SELECT
-				U1.Id,
-				U1.Nm Name,
-				U1.Email,
-				U1.Mobile,
-				U2. Nm Manager,
-				CASE WHEN U1.Status = 1 THEN 'Active'
-					ELSE 'Inactive'
-				END Status
-				FROM User_Master U1
-				LEFT JOIN User_Master U2
-				ON U1.Manager_Id = U2.Id
-				WHERE U1.Id<>@Id
-		END
+	BEGIN TRY
+		BEGIN TRAN trn_userManage
+			IF @Action = 'create'
+				BEGIN
+					INSERT INTO User_Master (
+											Nm,
+											Email,
+											Mobile,
+											Password,
+											Manager_Id,
+											Status
+											)VALUES(
+											@Name,
+											@Email,
+											@Mobile,
+											DBO.HashPassword(@Password),
+											@Manager,
+											@Status);
+					SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action = 'update'
+				BEGIN
+					UPDATE User_Master SET
+										Nm = @Name,
+										Email = @Email,
+										Mobile = @Mobile,
+										Manager_Id = @Manager,
+										Status = @Status
+										WHERE Id = @Id;
+					SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action = 'get'
+				BEGIN
+					SELECT
+						Id, Nm Name, Email, Mobile, Manager_Id, Status
+						FROM User_Master(NOLOCK)
+						WHERE Id = @Id;
+				END
+			ELSE IF @Action = 'getall'
+				BEGIN
+					SELECT
+						U1.Id,
+						U1.Nm Name,
+						U1.Email,
+						U1.Mobile,
+						U2. Nm Manager,
+						CASE WHEN U1.Status = 1 THEN 'Active'
+							ELSE 'Inactive'
+						END Status
+						FROM User_Master(NOLOCK) U1
+						LEFT JOIN User_Master(NOLOCK) U2
+						ON U1.Manager_Id = U2.Id
+						WHERE U1.Id<>@Id;
+				END
+		COMMIT TRAN trn_userManage;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN trn_userManage;
+	END CATCH
 END
 
 
@@ -434,16 +451,113 @@ END
 /* EXEC USP_MANAGED_USER @Action='update',
 					  @Id = 6,
 					  @Name = 'Sunil Sir',
-					  @Email = 'sunil123@gmail.com',
+					  @Email = 'sunilSir123@gmail.com',
 					  @Mobile = '1234567890',
 					  @Manager = 1,
 					  @Status = 1;
 */
 /*--- GET ---*/
 /* EXEC USP_MANAGED_USER @Action='get',
-					   @Id = 4
+					   @Id = 6
 */
 /*--- GETALL ---*/
 /* EXEC USP_MANAGED_USER @Action='getall',
 					  @Id = 3
 */		
+
+
+
+/*----- PROC 11 -----*/
+/*----- GET USER THROUGH BY ROLE -----*/
+CREATE PROCEDURE USP_GET_USER_BY_ROLE
+@Role VARCHAR(50),
+@Id INT
+AS
+BEGIN
+	SELECT
+		um.Id, um.Nm Name
+		FROM User_Master um
+		INNER JOIN Role_Employee_Mapping rem
+		ON um.Id = rem.EmpId
+		INNER JOIN Role_Master rm
+		ON rem.RoleId = rm.Id
+		WHERE rm.Role = @Role
+		AND um.Id<>@Id AND um.Status = 1;
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_USER_BY_ROLE 'Manager',2;
+
+
+
+/*----- PROC 12 -----*/
+/*----- ROLE MANAGE -----*/
+CREATE PROCEDURE USP_MANAGED_ROLE
+@Action VARCHAR(50),
+@Id INT = NULL,
+@RoleName VARCHAR(50) =  NULL,
+@Status TINYINT = NULL
+AS
+BEGIN
+	IF @Action = 'create' AND EXISTS (SELECT 1 FROM Role_Master WHERE Role = @RoleName)
+		BEGIN
+			THROW 50000, 'This Role Already Exist', 1;
+			RETURN;
+		END
+	IF @Action = 'update' AND EXISTS (SELECT 1 FROM Role_Master WHERE Role = @RoleName AND Id <> @Id)
+		BEGIN
+			THROW 50000, 'This Role Already Exist', 1;
+			RETURN;
+		END
+	BEGIN TRY
+		BEGIN TRAN trn_role
+			IF @Action = 'create'
+				BEGIN
+					INSERT INTO Role_Master(Role, Status)
+									VALUES(@RoleName, @Status);
+					SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action = 'update'
+				BEGIN
+					UPDATE Role_Master SET
+								Role = @RoleName,
+								Status = @Status
+								WHERE Id = @Id;
+			SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action ='getall'
+				BEGIN
+					SELECT Id, Role, Status FROM Role_Master(NOLOCK);
+				END
+			ELSE IF @Action ='get'
+				BEGIN
+					SELECT Id, Role, Status FROM Role_Master(NOLOCK) WHERE Id = @Id;
+				END
+		COMMIT TRAN trn_role;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN trn_role;
+	END CATCH
+END
+
+
+/*----- FOR CHECKING-----*/
+/*--- CREATE ---*/
+/* EXEC USP_MANAGED_ROLE @Action='create',
+					  @RoleName = 'Super Admin',
+					  @Status = 1;
+*/
+/*--- UPDATE ---*/
+/* EXEC USP_MANAGED_ROLE @Action='update',
+					  @RoleName = 'Manager',
+					  @Status = 1,
+					  @Id = 1;
+	*/
+/*--- GET ---*/
+/* EXEC USP_MANAGED_ROLE @Action='get',
+					   @Id = 2
+*/
+/*--- GETALL ---*/
+/* EXEC USP_MANAGED_ROLE @Action='getall'
+*/

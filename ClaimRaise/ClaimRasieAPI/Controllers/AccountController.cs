@@ -93,7 +93,7 @@ namespace ClaimRasieAPI.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
