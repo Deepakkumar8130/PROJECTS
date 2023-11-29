@@ -1,6 +1,6 @@
 ﻿var base_url = "https://localhost:7183/api/";
 $(document).ready(function () {
-
+    //localStorage.setItem("theme", "light");
     $("#btnLogin").click(function () {
        
         var user = {

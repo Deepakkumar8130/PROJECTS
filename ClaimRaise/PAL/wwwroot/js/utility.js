@@ -1,4 +1,14 @@
-﻿
+﻿$(document).ready(function () {
+    //$(".wrapper").addClass(localStorage.getItem("theme"));
+    $("#themeMode").click(function () {
+        var currentTheme = localStorage.getItem('theme') || 'light';
+        var newTheme = (currentTheme === 'light') ? 'dark-mode' : "light"
+
+        // Update the theme in localStorage
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+    })
+})
 function requiredTextFilled(control, ErrorMessage, validationtype = "all") {
     var id = "#txt" + control;
     var err = "#err" + control;
@@ -113,3 +123,28 @@ function comparePassword(control1, control2) {
         return true
     }
 }
+
+//function changeTheme() {
+//    alert("here")
+//    //if (localStorage.getItem("theme") == "light") {
+//    //    localStorage.setItem("theme", "dark-mode");
+//    //    $("#themeMode").html("<i class='far fa-moon'></i>")
+//    //    window.location.reload();
+//    //}
+//    //else {
+//    //    localStorage.setItem("theme", "light");
+//    //    window.location.reload();
+//    //}
+
+//    if (theme == "light") {
+//        theme = "dark-mode";
+//    }
+//    else {
+//        theme = "light"
+//    }
+//    var elements = document.querySelectorAll('.wrapper');
+//    elements.forEach(function (element) {
+//        element.classList.add(theme);
+//    });
+//}
+

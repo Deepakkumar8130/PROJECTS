@@ -110,7 +110,7 @@
             </div>
         </nav> 
     </header>*@
-    <div class="wrapper">
+    <div class="wrapper ">
 
         @*  <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
@@ -132,7 +132,12 @@
                 </li> *@
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a id="themeMode" href="#" class="nav-link">
+                        <i id="themeIcon" class="fa"></i>
+                    </a>
+                </li>
+                <li class="nav-item mt-1">
                     <button class="btn btn-sm btn-primary" id="btnLogout">Logout</button>
                 </li>
             </ul>
@@ -257,6 +262,9 @@
                     </a>
                 </li>
             </ul> *@
+            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                <i class="fas fa-th-large"></i>
+            </a>
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
@@ -973,6 +981,19 @@
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h4 class="text-dark">User Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li class="text-bold" id="">Name</li>
+                        <li id="">Name</li>
+                        <li id="">Name</li>
+                        <li id="">Name</li>
+                    </ul>
+                </div>
+            </div>
         </aside>
         <!-- /.control-sidebar -->
     </div>

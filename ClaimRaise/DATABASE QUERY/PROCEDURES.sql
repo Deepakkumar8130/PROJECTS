@@ -420,7 +420,7 @@ BEGIN
 						U1.Nm Name,
 						U1.Email,
 						U1.Mobile,
-						U2. Nm Manager,
+						ISNull(U2.Nm,'Not Assigned') Manager,
 						CASE WHEN U1.Status = 1 THEN 'Active'
 							ELSE 'Inactive'
 						END Status
@@ -528,7 +528,11 @@ BEGIN
 				END
 			ELSE IF @Action ='getall'
 				BEGIN
-					SELECT Id, Role, Status FROM Role_Master(NOLOCK);
+					SELECT Id, Role,
+					CASE WHEN Status = 1 THEN 'Active'
+							ELSE 'Inactive' 
+					END Status
+					FROM Role_Master(NOLOCK);
 				END
 			ELSE IF @Action ='get'
 				BEGIN
