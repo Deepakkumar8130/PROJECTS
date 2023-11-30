@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClaimRasieAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProgramController : ControllerBase

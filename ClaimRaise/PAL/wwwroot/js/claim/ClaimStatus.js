@@ -1,10 +1,10 @@
 ﻿$(document).ready(function () {
-    GetClaimTransaction();
+    GetClaimStatus();
 })
 
-function GetClaimTransaction() {
+function GetClaimStatus() {
     $.ajax({
-        url: base_url + "Claim/GetClaimsTransaction",
+        url: base_url + "Claim/GetClaimStatus",
         method: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -19,20 +19,20 @@ function GetClaimTransaction() {
                 return item;
             });
             if (response.ok) {
-                $("#tblClaimTransactions").DataTable().destroy();
-                $("#tblClaimTransactions").DataTable({
+                $("#tblClaimStatus").DataTable().destroy();
+                $("#tblClaimStatus").DataTable({
 
                     data: response.data,
                     columns: [
                         { data: "serialNo" },
-                        { data: "transactionNo" },
+                        { data: "claimId" },
                         { data: "claimTitle" },
                         { data: "claimReason" },
                         { data: "claimAmount" },
-                        { data: "claimDescription" },
                         { data: "claimDt" },
-                        { data: "transactionDt" },
-                        { data: "approvedBy" }
+                        { data: "action" },
+                        { data: "actionBy" },
+                        { data: "currentStatus" }
                     ]
                 })
             }

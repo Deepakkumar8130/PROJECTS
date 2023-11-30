@@ -13,6 +13,9 @@ function GetMenuProgram() {
         "method": "GET",
         "contentType": "application/json; charset=utf-8",
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
         "data": {UserId},
         "success": function (response) {
             if (response.ok) {

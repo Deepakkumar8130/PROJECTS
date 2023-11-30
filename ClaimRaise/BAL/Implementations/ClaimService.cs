@@ -374,5 +374,61 @@ namespace BAL.Implementations
 
             return new Tuple<string, List<ClaimTransaction>>(message, claimTransactions);
         }
+
+
+        public async Task<Tuple<string, List<GetClaimStatusModel>>> GetClaimStatus(int UserId)
+        {
+            string message = string.Empty;
+            List<GetClaimStatusModel> claimAction = new List<GetClaimStatusModel>();
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_GET_CLAIM_STATUS";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var parameter = new SqlParameter();
+
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@UserId";
+                parameter.SqlValue = UserId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+                var result = command.ExecuteReader();
+
+                while (result.Read())
+                {
+                    GetClaimStatusModel claim = new GetClaimStatusModel();
+                    claim.ClaimId = result["Id"].ToString();
+                    claim.ClaimTitle = result["Claim_Title"].ToString();
+                    claim.ClaimReason = result["Claim_Reason"].ToString();
+                    claim.ClaimAmount = result["Amount"].ToString();
+                    claim.ClaimDt = result["ClaimDt"].ToString();
+                    claim.Action = result["Action"].ToString();
+                    claim.ActionBy = result["ActionBy"].ToString();
+                    claim.CurrentStatus = result["CurrentStatus"].ToString();
+
+                    claimAction.Add(claim);
+                }
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, List<GetClaimStatusModel>>(message, claimAction);
+        }
     }
 }

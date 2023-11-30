@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace ClaimRasieAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClaimController : ControllerBase
@@ -252,5 +252,43 @@ namespace ClaimRasieAPI.Controllers
             }
             return Ok(response);
         }
+
+
+        
+        [HttpGet]
+        [Route("GetClaimStatus")]
+        public async Task<IActionResult> GetClaimStatus(int UserId)
+        {
+            try
+            {
+                var result = await _claimService.GetClaimStatus(UserId);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = result.Item2;
+                    response.message = "Claim status record get successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+
+
     }
 }

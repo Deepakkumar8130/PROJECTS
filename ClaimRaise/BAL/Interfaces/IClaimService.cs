@@ -15,5 +15,6 @@ namespace BAL.Interfaces
         Task<string> ActionOnRequest(ClaimAction claim);
         Task<Tuple<string, byte[]>> GetClaimEvidence(string path);
         Task<Tuple<string, List<ClaimTransaction>>> GetClaimTransactions(int UserId);
+        Task<Tuple<string, List<GetClaimStatusModel>>> GetClaimStatus(int UserId);
     }
 }

@@ -17,10 +17,10 @@ namespace PAL.Controllers
         {
             return View();
         }
-        
-        //public async Task<IActionResult> DownloadEvidence(string path)
-        //{
-        //    return RedirectToAction();
-        //}
+
+        public async Task<IActionResult> ClaimStatus()
+        {
+            return View();
+        }
     }
 }
