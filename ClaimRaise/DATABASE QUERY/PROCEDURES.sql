@@ -565,3 +565,34 @@ END
 /*--- GETALL ---*/
 /* EXEC USP_MANAGED_ROLE @Action='getall'
 */
+
+
+
+
+/*----- PROC 13 -----*/
+/*----- GET CLAIM STATUS -----*/
+CREATE PROCEDURE USP_GET_CLAIM_STATUS
+@UserId INT
+AS
+BEGIN
+	SELECT
+	cm.Id, cm.Claim_Title, cm.Claim_Reason, cm.Amount, cm.ClaimDt,
+	  CASE  
+		   WHEN eca.Action = 'Initiated' THEN 'Raise A Claim Request'  
+		   WHEN eca.Action = 'Pending At HR' THEN 'Approved By Manager'  
+		   WHEN eca.Action = 'Pending At Account' THEN 'Approved By HR' 
+		   ELSE eca.Action  
+		   END 'Action',
+	um.Nm AS ActionBy,cm.CurrentStatus
+	FROM Claim_Master cm
+	INNER JOIN Employee_Claim_Action eca
+	ON cm.Id = eca.ClaimId
+	INNER JOIN User_Master um
+	ON um.Id = eca.ActionBy
+	WHERE cm.CurrentStatus LIKE'%Pending%' 
+	AND cm.Status = 1 AND cm.UserId = @UserId;
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_CLAIM_STATUS 3
