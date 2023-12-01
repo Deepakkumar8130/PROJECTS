@@ -1,0 +1,19 @@
+﻿.Id_bg {
+    background: linear-gradient(to right bottom, #ffff, #ffff, #00919E);
+}
+
+#profileImg {
+    border-radius: 50%;
+    border: 3px solid #00919E; /* Add border styling here */
+}
+
+#idCard {
+    border: 2px solid #ffff;
+    border-radius: 15px;
+    font-family: math;
+    width:70%
+}
+
+.idHeader {
+    background-color: #00919E;
+}

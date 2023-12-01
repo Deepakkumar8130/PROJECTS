@@ -1,6 +1,5 @@
 ﻿var base_url = "https://localhost:7183/api/";
 $(document).ready(function () {
-    //localStorage.setItem("theme", "light");
     $("#btnLogin").click(function () {
        
         var user = {
@@ -24,9 +23,8 @@ $(document).ready(function () {
                     localStorage.setItem("UserId", user.id);
                     localStorage.setItem("UserRole", user.role);
                     localStorage.setItem("UserName", user.userName);
-                    //delete user.password;
                     localStorage.setItem("token", response.token);
-                   
+                    localStorage.setItem("theme", "light");
                     setTimeout(function () {
                         window.location.href = "/Home/Index"
                     }, 500);

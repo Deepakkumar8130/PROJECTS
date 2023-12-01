@@ -20,25 +20,27 @@ $(document).ready(function (){
         window.location.href = "/Account/Login";
     })
 
-
-    window.onload = function () {
-        var currentTheme = localStorage.getItem('theme')
-        applyTheme(currentTheme);
-    };
+    var currentTheme = localStorage.getItem('theme')
+    applyTheme(currentTheme);
+    
 })
 
 
 
 function applyTheme(newTheme) {
     var icon = document.querySelector('#themeIcon');
+    var element = document.querySelector('.navbar');
+    element.classList.remove('navbar-light', 'navbar-dark');
 
     if (newTheme == "light") {
         icon.classList.remove('fa-moon');
         icon.classList.add("fa-sun");
+        element.classList.add('navbar-light');
     }
     else {
         icon.classList.remove('fa-sun');
         icon.classList.add("fa-moon");
+        element.classList.add('navbar-dark');
     }
     // Get all elements with the class 'wrapper' and update their classes
     var elements = document.querySelectorAll('.wrapper');
@@ -46,4 +48,8 @@ function applyTheme(newTheme) {
         element.classList.remove('light', 'dark-mode');
         element.classList.add(newTheme);
     });
+
+    
+    
+    
 }
