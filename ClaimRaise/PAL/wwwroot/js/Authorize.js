@@ -1,5 +1,6 @@
 var base_url = "https://localhost:7183/api/";
 var rootPath = "https://localhost:7289/";
+var UserLoginInfo = JSON.parse(localStorage.getItem("User"))
 checkUserLoggedIn();
 
 
@@ -10,11 +11,12 @@ function checkUserLoggedIn() {
     }
 }
 
-$(document).ready(function (){
+$(document).ready(function () {
+
+    
+    console.log(UserLoginInfo)
     $("#btnLogout").click(function () {
-        localStorage.removeItem("UserId");
-        localStorage.removeItem("UserName");
-        localStorage.removeItem("UserRole");
+        localStorage.removeItem("UserLoginInfo");
         localStorage.removeItem("token");
         localStorage.removeItem("theme");
         window.location.href = "/Account/Login";

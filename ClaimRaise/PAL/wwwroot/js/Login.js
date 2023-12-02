@@ -19,10 +19,8 @@ $(document).ready(function () {
                 if (response.ok) {
                     $("#msg").html(response.message).css("color", "green");
                     //debugger
-                    var user = response.data;
-                    localStorage.setItem("UserId", user.id);
-                    localStorage.setItem("UserRole", user.role);
-                    localStorage.setItem("UserName", user.userName);
+                    var user = JSON.stringify(response.data);
+                    localStorage.setItem("User", user);
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("theme", "light");
                     setTimeout(function () {

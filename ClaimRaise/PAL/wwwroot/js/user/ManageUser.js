@@ -36,7 +36,7 @@ function GetAllUsers() {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
-        data: { "UserId": localStorage.getItem("UserId") },
+        data: { "UserId": UserLoginInfo.id },
         "success": function (response) {
             //console.log(response.data)
             response.data = response.data.map(function (item, index) {
@@ -94,7 +94,7 @@ function SubmitData() {
     if (isValid) {
         var data = new FormData();
         var user = {
-            AdminId: window.localStorage.getItem("UserId"),
+            AdminId: UserLoginInfo.id,
             UserName: $("#txtUserName").val(),
             Email: $("#txtEmailAddress").val(),
             Mobile: $("#txtMobileNumber").val(),
@@ -196,7 +196,7 @@ function SubmitDataUpdate() {
     if (isValid) {
         var data = new FormData();
         var user = {
-            AdminId: window.localStorage.getItem("UserId"),
+            AdminId: UserLoginInfo.id,
             Id: $("#hdnUserId").val(),
             UserName: $("#txtUserName").val(),
             Email: $("#txtEmailAddress").val(),

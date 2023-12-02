@@ -31,7 +31,7 @@ function GetAllPendingRequests() {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
-        data: { "UserId": localStorage.getItem("UserId"), "Role": localStorage.getItem("UserRole") },
+        data: { "UserId": UserLoginInfo.id, "Role": UserLoginInfo.role },
         "success": function (response) {
             console.log(response.data)
             response.data = response.data.map(function (item, index) {
@@ -91,8 +91,8 @@ function ApproveRejectRequest(action) {
     var claim = {
         ClaimId: $("#hdnClaimId").val(),
         Action: action,
-        UserId: localStorage.getItem("UserId"),
-        Role: localStorage.getItem("UserRole"),
+        UserId: UserLoginInfo.id,
+        Role: UserLoginInfo.role,
         Remarks: $("#txtRemarks").val()
     }
 
@@ -143,7 +143,7 @@ function ShowActionHistory(id) {
         headers: {
             "Authorization":"Bearer "+localStorage.getItem("token")
         },
-        data: { id },
+        data: { claimId:id },
         "success": function (response) {
             if (response.ok) {
                 response.data = response.data.map(function (item, index) {
@@ -215,12 +215,3 @@ function DownloadEvidence(path) {
     })
 }
 
-function downloadURI(uri, name) {
-    let link = document.createElement("a");
-    link.download = name;
-    link.href = uri;
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}

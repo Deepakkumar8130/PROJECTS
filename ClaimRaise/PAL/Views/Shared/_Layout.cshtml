@@ -70,9 +70,12 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <!--ID Card-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+
 
     <!--DataTables-->
-
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -1009,34 +1012,30 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class=" mt-2 mb-0">
+                        <button class="btn btn-primary float-right m-3" id="downloadIdBtn">Download ID</button>
+                    </div>
+                    <div class="modal-body mt-0">
                         <div class="card  bg-light mx-auto" id="idCard">
                             <div class="card-header text-center text-light idHeader">
-                                <div class="fw-bold fs-3"><span>CHETU SKILL CENTER</span></div>
-                                <small id="Address" class="">Sector-63 Noida-201301 (UP) India</small>
+                                <div class="fw-bold h4 mb-0"><span>CHETU SKILL CENTER</span></div>
+                                <small id="Address" class="mt-0">Sector-63 Noida-201301 (UP) India</small>
                             </div>
-                            <div class="text-center Id_bg p-4">
-
-                                <div class="card-body">
-                                        <img id="profileImg" for="ChooseImg" src="https://placehold.jp/150x150.png" alt="Image">
-                                        <div><span id="Name" class="fs-3"><b>Deepak Kumar</b></span></div>
-                                        <small id="Designation" class="form-text">PROJECT MANAGER</small>
+                            <div class="Id_bg p-4">
+                                <div class="card-body text-center">
+                                        <img id="profileImg" for="ChooseImg" class="mb-3" src="https://placehold.jp/150x150.png" alt="Image">
+                                    <div><span id="CardName" class="h3 text-bold mb-0"></span></div>
+                                        <small id="CardDesignation" class="form-text h6"></small>
                                 </div>
-                                <div class="card-body mx-0 fs-6">
-                                    <div> <b>Employee Id : </b><span>12546</span></div>
-                                    <div> <b>Email : </b><span>yashsingh98734@gmail.com</span></div>
-                                    <div> <b>Phone : </b><span>1234567890</span></div>
+                                <div class="card-body mx-0">
+                                    <div> <b>Employee Id : </b><span id="CardEmployeeId"></span></div>
+                                    <div> <b>Email : </b><span id="CardEmail"></span></div>
+                                    <div> <b>Phone : </b><span id="CardPhone"></span></div>
                                     <div> <b>Valid Untill : </b><span>2023-11-30</span></div>
-
                                 </div>
-
                             </div>
                         </div>
-
-                        
-
                     </div>
-
                 </div>
                 <!-- /.modal-content -->
             </div>

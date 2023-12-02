@@ -1,4 +1,5 @@
 
+
 /*----- PROC 1 -----*/
 /*----- AUTHENTICATE USER -----*/
 CREATE PROCEDURE USP_GET_AUTHENTICATE
@@ -277,7 +278,8 @@ BEGIN
 		eca.ActionDt 'Action Date'
 		FROM Employee_Claim_Action(NOLOCK) eca
 		INNER JOIN User_Master(NOLOCK) um
-		ON eca.ActionBy = um.Id;
+		ON eca.ActionBy = um.Id
+		WHERE eca.ClaimId = @claimId;
 END
 
 

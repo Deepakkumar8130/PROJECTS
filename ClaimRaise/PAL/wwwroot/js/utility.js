@@ -67,7 +67,7 @@ function FillDropDownList(url, params, ddlId, async = true) {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
-        data: { "UserId": localStorage.getItem("UserId"), "Role": params },
+        data: { "UserId": UserLoginInfo.id, "Role": params },
         "success": function (response) {
             //console.log(response.data)
             if (response.ok) {
@@ -82,6 +82,19 @@ function FillDropDownList(url, params, ddlId, async = true) {
         }
     })
 }
+
+
+
+function downloadURI(uri, name) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 
 
 
@@ -112,6 +125,53 @@ function comparePassword(control1, control2) {
     var txtVal1 = $(id1).val()
     if (txtVal != txtVal1) {
         $(err).html("Confirm password not matched !").addClass("text-danger")
+        $(formGroup).addClass("text-danger")
+        return false
+    }
+    else {
+
+        $(err).html("").removeClass("text-danger")
+        $(formGroup).removeClass("text-danger")
+        return true
+    }
+}
+
+
+
+function CurrentAmount(control, ErrorMessage) {
+    var id = "#txt" + control;
+    var err = "#err" + control;
+    var formGroup = "#formGroup" + control;
+    var txtVal = $(id).val();
+
+    if (txtVal < 0) {
+        $(err).html("please enter " + ErrorMessage).addClass("text-danger");
+        $(formGroup).addClass("text-danger");
+        return false;
+    }
+    else {
+        if (txtVal > 500) {
+            $(err).html("").removeClass("text-danger");
+            $(formGroup).removeClass("text-danger");
+            return true;
+        }
+        else {
+            $(err).html("Minimun Amount 500").addClass("text-danger");
+            $(formGroup).addClass("text-danger");
+            return false;
+        }
+    }
+}
+
+function compareDates(control) {
+    var id = "#txt" + control
+    var err = "#err" + control
+    var formGroup = "#formGroup" + control
+    var txtVal = $(id).val()
+    var inputDate = new Date(txtVal);
+    var currentDate = new Date();
+    if (inputDate  > currentDate) {
+        $(err).html("Please Choose Valid Date !").addClass("text-danger")
         $(formGroup).addClass("text-danger")
         return false
     }

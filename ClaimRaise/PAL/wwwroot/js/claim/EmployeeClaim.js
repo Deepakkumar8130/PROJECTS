@@ -39,7 +39,7 @@ function addClaimRequest() {
             "ClaimDescription": $("#txtClaimDescription").val(),
             "ExpenseDt": $("#txtClaimExpenseDt").val(),
             "ClaimAmount": $("#txtClaimAmount").val(),
-            "UserId": window.localStorage.getItem("UserId")
+            "UserId": UserLoginInfo.id
         }
         data.append("claim", JSON.stringify(claim));
         data.append("evidence", evidence);
@@ -92,12 +92,14 @@ $("#txtClaimReason").change(function () {
     isValid = requiredTextFilled("ClaimReason", "claim reason");
     if (!isValid) { return false }
 })
-$("#txtClaimExpenseDt").keyup(function () {
-    isValid = requiredTextFilled("txtClaimExpenseDt", "claim expense date");
+$("#txtClaimExpenseDt").change(function () {
+    isValid = requiredTextFilled("ClaimExpenseDt", "claim expense date");
+    isValid = compareDates("ClaimExpenseDt");
     if (!isValid) { return false }
 })
 $("#txtClaimAmount").keyup(function () {
     isValid = requiredTextFilled("ClaimAmount", "claim amount");
+    isValid = CurrentAmount("ClaimAmount", "postive Number");
     if (!isValid) { return false }
 })
 $("#txtClaimEvidence").change(function () {

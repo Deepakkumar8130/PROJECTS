@@ -1,5 +1,6 @@
 ﻿.Id_bg {
-    background: linear-gradient(to right bottom, #ffff, #ffff, #00919E);
+    
+    border-radius: 0px 0px 30px 30px;
 }
 
 #profileImg {
@@ -8,12 +9,14 @@
 }
 
 #idCard {
-    border: 2px solid #ffff;
-    border-radius: 15px;
+    border: 2px solid #1f7575;
+    background: linear-gradient(to right bottom,#ffff, #ffff, #00919E);
+    border-radius: 43px 15px 30px 30px;
     font-family: math;
-    width:70%
+    width: 70%
 }
 
 .idHeader {
     background-color: #00919E;
+    border-radius: 43px 15px 50px 0px;
 }

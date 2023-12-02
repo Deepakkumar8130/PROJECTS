@@ -4,7 +4,7 @@ $(document).ready(function () {
 })
 
 function GetMenuProgram() {
-    let UserId = window.localStorage.getItem("UserId")
+    let UserId = UserLoginInfo.id
     //console.log(typeof UserId)
     //console.log(UserId)
     //alert("check")
@@ -29,8 +29,8 @@ function GetMenuProgram() {
                     userMenu += '<p>'+item.title+'</p></a>'
                 })
                 $("#UserMenu").html(userMenu);
-                $("#UserRole").text(localStorage.getItem("UserRole"));
-                $("#UserName").html('<a href="#" class="d-block">'+window.localStorage.getItem("UserName")+'</a>');
+                $("#UserRole").text(UserLoginInfo.role);
+                $("#UserName").html('<a href="#" class="d-block">' + UserLoginInfo .userName+'</a>');
 
                 
             }

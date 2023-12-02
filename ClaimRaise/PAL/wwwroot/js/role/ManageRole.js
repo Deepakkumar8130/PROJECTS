@@ -29,7 +29,7 @@ function GetAllRoles() {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
-        data: { "UserId": localStorage.getItem("UserId") },
+        data: { "UserId": UserLoginInfo.id },
         "success": function (response) {
             //console.log(response.data)
             response.data = response.data.map(function (item, index) {
@@ -72,7 +72,7 @@ function SubmitData() {
     if (isValid) {
         var data = new FormData();
         var role = {
-            AdminId: window.localStorage.getItem("UserId"),
+            AdminId: UserLoginInfo.id,
             RoleName: $("#txtRoleName").val(),
             Status: $("#ddlStatus").val()
         };
@@ -156,7 +156,7 @@ function SubmitDataUpdate() {
     if (isValid) {
         var data = new FormData();
         var role = {
-            AdminId: window.localStorage.getItem("UserId"),
+            AdminId: UserLoginInfo.id,
             Id: $("#hdnRoleId").val(),
             RoleName: $("#txtRoleName").val(),
             Status: $("#ddlStatus").val()

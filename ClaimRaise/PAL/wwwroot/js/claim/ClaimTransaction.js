@@ -8,7 +8,7 @@ function GetClaimTransaction() {
         method: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: { "UserId": localStorage.getItem("UserId") },
+        data: { "UserId": UserLoginInfo.id },
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         },
