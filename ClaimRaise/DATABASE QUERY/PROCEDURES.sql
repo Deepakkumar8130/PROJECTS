@@ -478,10 +478,10 @@ AS
 BEGIN
 	SELECT
 		um.Id, um.Nm Name
-		FROM User_Master um
-		INNER JOIN Role_Employee_Mapping rem
+		FROM User_Master(NOLOCK) um
+		INNER JOIN Role_Employee_Mapping(NOLOCK) rem
 		ON um.Id = rem.EmpId
-		INNER JOIN Role_Master rm
+		INNER JOIN Role_Master(NOLOCK) rm
 		ON rem.RoleId = rm.Id
 		WHERE rm.Role = @Role
 		AND um.Id<>@Id AND um.Status = 1;
@@ -586,10 +586,10 @@ BEGIN
 		   ELSE eca.Action  
 		   END 'Action',
 	um.Nm AS ActionBy,cm.CurrentStatus
-	FROM Claim_Master cm
-	INNER JOIN Employee_Claim_Action eca
+	FROM Claim_Master(NOLOCK) cm
+	INNER JOIN Employee_Claim_Action(NOLOCK) eca
 	ON cm.Id = eca.ClaimId
-	INNER JOIN User_Master um
+	INNER JOIN User_Master(NOLOCK) um
 	ON um.Id = eca.ActionBy
 	WHERE cm.CurrentStatus LIKE'%Pending%' 
 	AND cm.Status = 1 AND cm.UserId = @UserId;
@@ -598,3 +598,42 @@ END
 
 /*----- FOR CHECKING-----*/
 EXEC USP_GET_CLAIM_STATUS 3
+
+
+/*----- PROC 14 -----*/
+/*----- GET USERS WITH ROLE -----*/
+CREATE PROCEDURE USP_GET_USERS_WITH_ROLE
+AS
+BEGIN
+	SELECT
+		um.Id, um.Nm Name, ISNULL(rm.Role, 'Role Not Assigned') Role
+		FROM User_Master(NOLOCK) um
+		LEFT JOIN Role_Employee_Mapping(NOLOCK) rem
+		ON um.Id = rem.EmpId
+		LEFT JOIN Role_Master(NOLOCK) rm
+		ON rem.RoleId = rm.Id
+		WHERE um.Status = 1;
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_USERS_WITH_ROLE;
+
+
+/*----- PROC 15 -----*/
+/*----- GET ROLES -----*/
+CREATE PROCEDURE USP_GET_ACTIVE_ROLES
+AS
+BEGIN
+	SELECT
+		Id, Role
+		FROM  Role_Master(NOLOCK)
+		WHERE Status = 1;
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_ACTIVE_ROLES;
+
+
+

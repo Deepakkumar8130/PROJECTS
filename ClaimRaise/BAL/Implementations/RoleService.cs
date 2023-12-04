@@ -238,45 +238,25 @@ namespace BAL.Implementations
             return message;
         }
 
-
-       /* public async Task<Tuple<string, List<Entity>>> GetEntities(int UserId, string role)
+        public async Task<Tuple<string, List<Entity>>> GetActiveRoles()
         {
             string message = string.Empty;
-            List<Entity> RoleEntities = new List<Entity>();
+            List<Entity> listsOfRoles = new List<Entity>();
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_GET_USER_BY_ROLE";
+                command.CommandText = "USP_GET_ACTIVE_ROLES";
                 command.CommandType = CommandType.StoredProcedure;
-
-                var parameter = new SqlParameter();
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Role";
-                parameter.SqlValue = role;
-                parameter.SqlDbType = SqlDbType.VarChar;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
-                parameter = new SqlParameter();
-                parameter.ParameterName = "@Id";
-                parameter.SqlValue = UserId;
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                command.Parameters.Add(parameter);
-
 
                 _context.Database.OpenConnection();
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {
-                    Entity entity = new Entity();
-                    entity.Id = Convert.ToInt32(result["Id"]);
-                    entity.Name = result["Name"].ToString();
-                    RoleEntities.Add(entity);
+                    Entity role = new Entity();
+                    role.Id = Convert.ToInt32(result["Id"]);
+                    role.Name = result["Role"].ToString();
+                    listsOfRoles.Add(role);
                 }
-
-
             }
             catch (SqlException ex)
             {
@@ -292,8 +272,63 @@ namespace BAL.Implementations
                 _context.Database.CloseConnection();
             }
 
-            return new Tuple<string, List<Entity>>(message, RoleEntities);
-        }*/
+            return new Tuple<string, List<Entity>>(message, listsOfRoles);
+        }
+
+
+        public async Task<string> AssignedRole(RoleAssginedModel model)
+        {
+            string message = string.Empty;
+
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_ASSIGN_ROLE";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var parameter = new SqlParameter();
+
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@UserId";
+                parameter.SqlValue = model.UserId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@RoleId";
+                parameter.SqlValue = model.RoleId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@Status";
+                parameter.SqlValue = model.Status;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+                var result = command.ExecuteScalar();
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return message;
+        }
 
     }
 }

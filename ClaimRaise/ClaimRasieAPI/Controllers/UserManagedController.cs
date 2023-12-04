@@ -196,5 +196,39 @@ namespace ClaimRasieAPI.Controllers
             }
             return Ok(response);
         }
+
+
+        [HttpGet]
+        [Route("GetUsersWithRole")]
+        public async Task<IActionResult> GetUsersWithRole()
+        {
+            try
+            {
+                var result = await _entity.GetUsersWithRole();
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = result.Item2;
+                    response.message = "All Records get successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
     }
 }

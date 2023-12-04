@@ -163,20 +163,21 @@ namespace ClaimRasieAPI.Controllers
         }
 
 
+
         [HttpGet]
-        [Route("GetUserByRole")]
-        public async Task<IActionResult> GetUserByRole(int UserId, string Role)
+        [Route("GetActiveRoles")]
+        public async Task<IActionResult> GetActiveRoles()
         {
             try
             {
-                var result = await _entity.GetEntities(UserId, Role);
+                var result = await _roleService.GetActiveRoles();
 
                 if (string.IsNullOrEmpty(result.Item1))
                 {
                     response.status = 200;
                     response.ok = true;
                     response.data = result.Item2;
-                    response.message = "User found successfully!";
+                    response.message = "All Records get successfully!";
                 }
                 else
                 {
@@ -184,6 +185,42 @@ namespace ClaimRasieAPI.Controllers
                     response.ok = false;
                     response.data = null;
                     response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("AssignedRole")]
+        public async Task<IActionResult> AssignedRole(RoleAssginedModel model)
+        {
+            try
+            {
+                var formData = Request.Form["Role"];
+                var role = JsonConvert.DeserializeObject<Role>(formData);
+                var result = await _roleService.AssignedRole(model);
+
+                if (string.IsNullOrEmpty(result))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = null;
+                    response.message = "Role Assigned successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result;
                 }
             }
             catch (Exception ex)

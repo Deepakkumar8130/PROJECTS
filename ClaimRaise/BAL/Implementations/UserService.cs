@@ -365,5 +365,46 @@ namespace BAL.Implementations
             return new Tuple<string, List<Entity>>(message, RoleEntities);
         }
 
+
+        public async Task<Tuple<string, List<UserVM>>> GetUsersWithRole()
+        {
+            string message = string.Empty;
+            List<UserVM> Users = new List<UserVM>();
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_GET_USERS_WITH_ROLE";
+                command.CommandType = CommandType.StoredProcedure;
+
+                _context.Database.OpenConnection();
+                var result = command.ExecuteReader();
+                while (result.Read())
+                {
+                    UserVM User = new UserVM();
+                    User.Id = result["Id"].ToString();
+                    User.UserName = result["Name"].ToString();
+                    User.Role = result["Role"].ToString();
+                    Users.Add(User);
+                }
+
+
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, List<UserVM>>(message, Users);
+        }
+
     }
 }

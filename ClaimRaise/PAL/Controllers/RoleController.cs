@@ -8,5 +8,10 @@ namespace PAL.Controllers
         {
             return View();
         }
+        
+        public IActionResult AssignRole()
+        {
+            return View();
+        }
     }
 }

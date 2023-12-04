@@ -60,7 +60,8 @@ INSERT INTO Program_Master (
 ('Show Claim Status','Claim/ClaimStatus','show claim',3,1),
 ('Claim Transactions','Claim/ShowClaimTransaction','show claim',3,1),
 ('Managed User','User/ManageUser','Users Managed',4,1),
-('Managed Roles','Role/ManageRole','Roles Managed',5,1);
+('Managed Roles','Role/ManageRole','Roles Managed',5,1),
+('Assign Role','Role/AssignRole','Assigned Role To User',6,1);
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
 INSERT INTO Tbl_Rights(Programe_id,UserId,RoleId,Status)
@@ -103,7 +104,8 @@ VALUES
 (4,NULL,6,1),
 (5,NULL,6,1),
 (6,NULL,6,1),
-(7,NULL,6,1);
+(7,NULL,6,1),
+(8,NULL,6,1);
 
 
 

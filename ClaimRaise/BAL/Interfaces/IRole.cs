@@ -13,5 +13,8 @@ namespace BAL.Interfaces
         Task<Tuple<string, Role>> GetSingleRole(int RoleId);
         Task<string> AddData(Role role);
         Task<string> UpdateData(Role role);
+
+        Task<Tuple<string, List<Entity>>> GetActiveRoles();
+        Task<string> AssignedRole(RoleAssginedModel model);
     }
 }
