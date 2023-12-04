@@ -637,3 +637,52 @@ EXEC USP_GET_ACTIVE_ROLES;
 
 
 
+/*----- PROC 16 -----*/
+/*----- ASSSIGN ROLES -----*/
+CREATE PROCEDURE USP_ASSIGN_ROLE
+@UserId INT,
+@RoleId INT,
+@Status INT
+AS
+BEGIN
+	/*--- IF ROLE ALREADY ASSIGNED TO USER ---*/
+	IF EXISTS(SELECT 1 FROM Role_Employee_Mapping(NOLOCK)
+				WHERE EmpId = @UserId
+				AND RoleId = @RoleId 
+				AND Status = @Status)
+		BEGIN
+			THROW 50000, 'This Role Already Assigned', 1;
+			RETURN;
+		END
+	BEGIN TRY
+		BEGIN TRAN trn_assign_role
+		/*--- DE-ACTIVE THE ASSIGNED ROLE ---*/
+			UPDATE Role_Employee_Mapping SET Status = 0 WHERE EmpId = @UserId;
+			/*--- IF ROLE ALREADY ASSIGNED TO USER BUT NOT ACTIVE ---*/
+			IF EXISTS(SELECT 1 FROM Role_Employee_Mapping(NOLOCK)
+				WHERE EmpId = @UserId
+				AND RoleId = @RoleId 
+				AND Status = 0)
+				BEGIN
+					/*--- ACTIVE THE ROLE ---*/
+					UPDATE Role_Employee_Mapping SET Status = 1 WHERE EmpId = @UserId AND RoleId = @RoleId;
+					COMMIT TRAN trn_assign_role;
+					RETURN;
+				END
+				/*--- INSERT THE NEW ROLE ASSIGN ENTRY ---*/
+			INSERT INTO Role_Employee_Mapping (RoleId, EmpId, Status)
+						VALUES(@RoleId, @UserId, @Status);
+		COMMIT TRAN trn_assign_role;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN trn_assign_role;
+	END CATCH
+END
+
+
+/*----- FOR CHECKING-----*/
+/*-- EXEC PROCEDURE USP_ASSIGN_ROLE @UserId INT, @RoleId INT, @Status INT -- */
+EXEC USP_ASSIGN_ROLE 2, 1, 1;
+
+
+

@@ -204,8 +204,8 @@ namespace ClaimRasieAPI.Controllers
         {
             try
             {
-                var formData = Request.Form["Role"];
-                var role = JsonConvert.DeserializeObject<Role>(formData);
+                //var formData = Request.Form["Role"];
+                //var role = JsonConvert.DeserializeObject<Role>(formData);
                 var result = await _roleService.AssignedRole(model);
 
                 if (string.IsNullOrEmpty(result))

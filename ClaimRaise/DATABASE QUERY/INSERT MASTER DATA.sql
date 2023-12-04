@@ -2,7 +2,7 @@
 
 /*----- ADD ROLES ------*/
 INSERT INTO Role_Master VALUES
-('Account',1),
+('Employee',1),
 ('Manager',1),
 ('HR',1),
 ('Account',1),
