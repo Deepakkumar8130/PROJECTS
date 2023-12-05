@@ -7,98 +7,106 @@ $(document).ready(function(){
     //    ResetUserForm();
     //})
 
-    $("#btnUserSubmit").click(function () {
+    $("#btnRoleAssignSubmit").click(function () {
             SubmitData();
     })
 })
 
 
-function GetAllUsersWithRole() {
+//function GetAllUsersWithRole() {
 
-    $.ajax({
-        url: base_url + "UserManaged/GetUsersWithRole",
-        method: "GET",
-        contentType: JSON,
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        },
-        data: { "UserId": UserLoginInfo.id },
-        "success": function (response) {
-            if (response.ok) {
-                var options = '<option value="">Select</option>'
-                response.data.forEach(function (item, index) {
-                    options += '<option data="'+item.role+'" value='+item.id+'>'+item.userName+'</option>'
-                })
-                $("#ddlUserNames").html(options)
-            }
-        },
-        "error": function (err) {
-            console.log(err)
-        }
-    })
-}
+//    $.ajax({
+//        url: base_url + "UserManaged/GetUsersWithRole",
+//        method: "GET",
+//        contentType: JSON,
+//        headers: {
+//            "Authorization": "Bearer " + localStorage.getItem("token")
+//        },
+//        data: { "UserId": UserLoginInfo.id },
+//        "success": function (response) {
+//            if (response.ok) {
+//                var options = '<option value="">Select</option>'
+//                response.data.forEach(function (item, index) {
+//                    options += '<option data="'+item.role+'" value='+item.id+'>'+item.userName+'</option>'
+//                })
+//                $("#ddlUserNames").html(options)
+//            }
+//        },
+//        "error": function (err) {
+//            console.log(err)
+//        }
+//    })
+//}
 
 $("#ddlUserNames").change(function (){
     var role = $("#ddlUserNames option:selected").attr("data")
     $("#showRole").html("Existing Role : " + role)
 })
 
+/*--- VALIDATION ON CHANGE THE OPTION , OPTION IS VALID OR NOT ---*/
+$("#ddlUserNames").change(function () {
+    requiredSelectFiled("UserNames", "user name")
+})
 
-//function SubmitData() {
-//    isValid = requiredSelectFiled("UserName", "user name")
-//    if (!isValid) { return false }
-
-//    isValid = requiredSelectFiled("UserRolesUserRoles", "user role")
-//    if (!isValid) { return false }
+$("#ddlUserRoles").change(function () {
+    requiredSelectFiled("UserRoles", "user role")
+})
 
 
-//    if (isValid) {
-//        var data = new FormData();
-//        var user = {
-//            AdminId: UserLoginInfo.id,
-//            UserName: $("#ddlUserName").val(),
-//            UserName: $("#ddlUserRoles").val()
-//        };
-//        data.append("User", JSON.stringify(user));
-//        //console.log(user);
-//        $.ajax({
-//            url: base_url + "UserManaged/RegisteredUser",
-//            method: "POST",
-//            cache: false,
-//            contentType: false,
-//            processData: false,
-//            headers: {
-//                "Authorization": "Bearer " + localStorage.getItem("token")
-//            },
-//            data: data,
-//            "success": function (response) {
-//                if (response.ok) {
-//                    Swal.fire({
-//                        title: "Good job!",
-//                        text: response.message,
-//                        icon: "success",
-//                        timer: 1500
-//                    });
-//                }
-//                else {
-//                    Swal.fire({
-//                        icon: "error",
-//                        title: "Oops...",
-//                        text: response.message,
-//                        timer: 2000
-//                    });
-//                }
-//                setTimeout(function () {
-//                    location.reload()
-//                }, 1500)
-//            },
-//            "error": function (err) {
-//                console.log(err);
-//            }
-//        })
+function SubmitData() {
 
-//    }
-//}
+    /*--- VALIDATION ON SUBMIT THE OPTION , OPTION IS VALID OR NOT ---*/
+    isValid = requiredSelectFiled("UserNames", "user name")
+    if (!isValid) { return false }
+
+    isValid = requiredSelectFiled("UserRoles", "user role")
+    if (!isValid) { return false }
+
+
+    if (isValid) {
+        var model = {
+            AdminId: UserLoginInfo.id,
+            UserId: $("#ddlUserNames").val(),
+            RoleId: $("#ddlUserRoles").val(),
+            Status: "1"
+        };
+        $.ajax({
+            url: base_url + "RoleManaged/AssignedRole",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            data: JSON.stringify(model),
+            "success": function (response) {
+                if (response.ok) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: response.message,
+                        icon: "success",
+                        timer: 1500
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        timer: 2000
+                    });
+                }
+                setTimeout(function () {
+                    location.reload()
+                }, 1500)
+            },
+            "error": function (err) {
+                console.log(err);
+            }
+        })
+
+    }
+}
 
 //function ResetUserForm() {
 //    var form = $("#UserForm")[0];

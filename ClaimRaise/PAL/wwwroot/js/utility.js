@@ -104,14 +104,14 @@ function requiredSelectFiled(control, ErrorMessage) {
     var formGroup = "#formGroup" + control
     var txtVal = $(id).val()
     if (txtVal == "" || txtVal == null || txtVal == "-1") {
-        $(err).html("Please select " + ErrorMessage).addClass("error-control")
-        $(formGroup).addClass("error-control")
+        $(err).html("Please select " + ErrorMessage).addClass("text-danger")
+        $(formGroup).addClass("text-danger")
         return false
     }
     else {
 
-        $(err).html("").removeClass("error-control")
-        $(formGroup).removeClass("error-control")
+        $(err).html("").removeClass("text-danger")
+        $(formGroup).removeClass("text-danger")
         return true
     }
 }
@@ -181,4 +181,30 @@ function compareDates(control) {
         $(formGroup).removeClass("text-danger")
         return true
     }
+}
+
+
+function GetAllUsersWithRole() {
+
+    $.ajax({
+        url: base_url + "UserManaged/GetUsersWithRole",
+        method: "GET",
+        contentType: JSON,
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        data: { "UserId": UserLoginInfo.id },
+        "success": function (response) {
+            if (response.ok) {
+                var options = '<option value="">Select</option>'
+                response.data.forEach(function (item, index) {
+                    options += '<option data="' + item.role + '" value=' + item.id + '>' + item.userName + '</option>'
+                })
+                $("#ddlUserNames").html(options)
+            }
+        },
+        "error": function (err) {
+            console.log(err)
+        }
+    })
 }

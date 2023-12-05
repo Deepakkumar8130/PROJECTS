@@ -686,3 +686,42 @@ EXEC USP_ASSIGN_ROLE 2, 1, 1;
 
 
 
+/*----- PROC 17 -----*/
+/*----- GET PROGRAM RIGHTS -----*/
+CREATE PROCEDURE USP_GET_PROGRAMS_RIGHTS_BY_USERID
+@UserId INT
+AS
+BEGIN
+	/*--- DECLARE VARIABLE FOR SAVE ROLE ID ---*/
+	DECLARE @roleId INT;
+	SELECT @roleId = RoleId FROM Role_Employee_Mapping(NOLOCK)
+					WHERE EmpId = @UserId and Status = 1;
+
+	/*--- GENERATE A TEMPORARY TABLE THAT STORE TBL_RIGHTS COPY DATA ---*/
+	SELECT Id, P_Title, Descr INTO #Program_Temp FROM Program_Master(NOLOCK)
+					WHERE Status = 1;
+
+	/*--- ADD A COLUMN "IsChecked" IN TEMPORARY TABLE 
+			FOR CHECK WHICH RIGHTS ASSIGN TO USER OR NOT 
+			FOR ASSIGN THEN IsChecked = 1 OTHERWISE = 0 ---*/
+	ALTER TABLE #Program_Temp ADD IsChecked TINYINT DEFAULT 0 WITH VALUES;;
+
+	/*--- UPDATE TEMPORARY TABLE COLUMN "IsChecked" FOR STORE A 1/0 
+			ACCORDING TO USER ID ---*/
+	UPDATE temp
+			SET temp.IsChecked = 1 FROM #Program_Temp(NOLOCK) temp
+			INNER JOIN Tbl_Rights(NOLOCK) r
+			ON  temp.Id = r.Programe_id
+			WHERE (r.UserId = @UserId OR r.RoleId = @roleId)
+			AND r.Status = 1;
+
+	SELECT*FROM #Program_Temp;
+	/*--- DROP A TEMPORARY TABLE ---*/
+	DROP TABLE #Program_Temp;
+END
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_PROGRAMS_RIGHTS_BY_USERID 2;
+
+
+
