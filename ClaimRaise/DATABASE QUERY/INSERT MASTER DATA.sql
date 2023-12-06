@@ -62,7 +62,8 @@ INSERT INTO Program_Master (
 ('Managed User','User/ManageUser','Users Managed',4,1),
 ('Managed Roles','Role/ManageRole','Roles Managed',5,1),
 ('Assign Role','Role/AssignRole','Assigned Role To User',6,1),
-('Assign Rights','ProgramRights/AssignRights','Assigned Program Rights',7,1);
+('Assign Individual Rights','ProgramRights/AssignRights','Assigned Program Rights',7,1),
+('Assign Group Rights','ProgramRights/AssignGroupRights','Assigned Program Rights For Group',8,1);
 
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/

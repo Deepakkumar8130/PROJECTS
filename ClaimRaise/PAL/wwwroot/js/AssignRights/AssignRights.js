@@ -8,7 +8,7 @@ $(document).ready(function(){
     //    ResetUserForm();
     //})
 
-    $("#btnRoleAssignSubmit").click(function () {
+    $("#btnIndividualRightsSubmit").click(function () {
             SubmitData();
     })
 })
@@ -30,7 +30,6 @@ function GetProgramsRightsData(id) {
         },
         data: { "UserId": id },
         "success": function (response) {
-            console.log(response.data)
             response.data = response.data.map(function (item, index) {
                 item.serialNo = index + 1; // Serial numbers start from 1
                 return item;
@@ -48,7 +47,7 @@ function GetProgramsRightsData(id) {
                                 var checkBox = "";
                                 if (row.isChecked == 1) {
                                     checkBox = "<div class='checkbox-wrapper-26'>"
-                                    checkBox += "<input type='checkbox' checked value='" + id + "' id='_checkbox-" + id + "'>"
+                                    checkBox += "<input type='checkbox' class='checkRights' checked value='" + id + "' id='_checkbox-" + id + "'>"
                                     checkBox += "<label for='_checkbox-" + id + "'>"
                                     checkBox += "<div class='tick_mark'></div>"
                                     checkBox += "</label></div>"
@@ -56,7 +55,7 @@ function GetProgramsRightsData(id) {
                                 }
                                 else {
                                     checkBox = "<div class='checkbox-wrapper-26'>"
-                                    checkBox += "<input type='checkbox' value='" + id + "' id='_checkbox-" + id + "'>"
+                                    checkBox += "<input type='checkbox' class='checkRights' value='" + id + "' id='_checkbox-" + id + "'>"
                                     checkBox += "<label for='_checkbox-" + id + "'>"
                                     checkBox += "<div class='tick_mark'></div>"
                                     checkBox += "</label></div>"
@@ -95,26 +94,35 @@ function SubmitData() {
     isValid = requiredSelectFiled("UserNames", "user name")
     if (!isValid) { return false }
 
-    isValid = requiredSelectFiled("UserRoles", "user role")
-    if (!isValid) { return false }
-
 
     if (isValid) {
-        var model = {
-            AdminId: UserLoginInfo.id,
-            UserId: $("#ddlUserNames").val(),
-            RoleId: $("#ddlUserRoles").val(),
-            Status: "1"
-        };
+
+        var programs = [];
+        $.each($("#tblUserProgramRights .checkRights"), function (i, ele) {
+            var id = $(ele).val()
+            var isChecked = 0;
+            if ($(ele).is(':checked')) {
+                isChecked = 1;
+            }
+            var program = { Id: id, IsChecked: isChecked };
+            programs.push(program);
+        })
+        var data = new FormData();
+        data.append("UserId", $("#ddlUserNames").val());
+        data.append("lstOfPrograms", JSON.stringify(programs));
+        console.log(JSON.stringify(programs))
+
+        
         $.ajax({
-            url: base_url + "RoleManaged/AssignedRole",
+            url: base_url + "ProgramRights/AssignIndividualProgramsRights",
             method: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            cache: false,
+            contentType: false,
+            processData: false,
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             },
-            data: JSON.stringify(model),
+            data: data, 
             "success": function (response) {
                 if (response.ok) {
                     Swal.fire({

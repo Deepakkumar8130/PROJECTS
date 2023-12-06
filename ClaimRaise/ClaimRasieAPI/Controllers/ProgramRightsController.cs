@@ -1,9 +1,11 @@
 ﻿using BAL.Implementations;
 using BAL.Interfaces;
 using ClaimAPI.Models;
+using MAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ClaimRasieAPI.Controllers
 {
@@ -33,6 +35,83 @@ namespace ClaimRasieAPI.Controllers
                     response.status = 200;
                     response.ok = true;
                     response.data = result.Item2;
+                    response.message = "Program Rights Get Successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("AssignIndividualProgramsRights")]
+        public async Task<IActionResult> AssignIndividualProgramsRights()
+        {
+            try
+            {
+                int UserId = Convert.ToInt32(Request.Form["UserId"]);
+                string str = Request.Form["lstOfPrograms"];
+                var lstPrograms = JsonSerializer.Deserialize<List<AssignProgramRightModel>>(str);
+                var xmlPrograms = XMLUtil.GenerateXML(lstPrograms);
+
+                var result = await _programRights.AssignIndividualProgramsRights(UserId, xmlPrograms);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = null;
+                    response.message = "Program Rights Get Successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("AssignGroupProgramsRights")]
+        public async Task<IActionResult> AssignGroupProgramsRights()
+        {
+            try
+            {
+                int RoleId = Convert.ToInt32(Request.Form["RoleId"]);
+                string str = Request.Form["lstOfPrograms"];
+                var lstPrograms = JsonSerializer.Deserialize<List<AssignProgramRightModel>>(str);
+                var xmlPrograms = XMLUtil.GenerateXML(lstPrograms);
+
+                var result = await _programRights.AssignGroupProgramsRights(RoleId, xmlPrograms);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = null;
                     response.message = "Program Rights Get Successfully!";
                 }
                 else
