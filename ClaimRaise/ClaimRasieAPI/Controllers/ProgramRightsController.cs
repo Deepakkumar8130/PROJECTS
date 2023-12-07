@@ -94,6 +94,40 @@ namespace ClaimRasieAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetProgramsRightsByRoleId")]
+        public async Task<IActionResult> GetProgramsRightsByRoleId(int RoleId)
+        {
+            try
+            {
+                var result = await _programRights.GetProgramsRightsByRoleId(RoleId);
+
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    response.status = 200;
+                    response.ok = true;
+                    response.data = result.Item2;
+                    response.message = "Program Rights Get Successfully!";
+                }
+                else
+                {
+                    response.status = 505;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = 505;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
+        }
+
+
         [HttpPost]
         [Route("AssignGroupProgramsRights")]
         public async Task<IActionResult> AssignGroupProgramsRights()

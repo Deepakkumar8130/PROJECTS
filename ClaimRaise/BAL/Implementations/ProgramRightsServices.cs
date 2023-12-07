@@ -79,7 +79,7 @@ namespace BAL.Implementations
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_GET_PROGRAMS_RIGHTS_BY_USERID";
+                command.CommandText = "USP_SAVE_INDIVIDUAL_RIGHTS";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -93,7 +93,7 @@ namespace BAL.Implementations
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
-                parameter.ParameterName = "@ProgramRights";
+                parameter.ParameterName = "@Rights";
                 parameter.SqlValue = XML;
                 parameter.SqlDbType = SqlDbType.Xml;
                 parameter.Direction = ParameterDirection.Input;
@@ -120,13 +120,64 @@ namespace BAL.Implementations
         }
 
 
+        public async Task<Tuple<string, List<ProgramRight>>> GetProgramsRightsByRoleId(int RoleId)
+        {
+            string message = string.Empty;
+            List<ProgramRight> programRights = new List<ProgramRight>();
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_GET_PROGRAMS_RIGHTS_BY_ROLEID";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var parameter = new SqlParameter();
+
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@RoleId";
+                parameter.SqlValue = RoleId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+                var result = command.ExecuteReader();
+
+                while (result.Read())
+                {
+                    ProgramRight programRight = new ProgramRight();
+                    programRight.Id = result["Id"].ToString();
+                    programRight.Title = result["P_Title"].ToString();
+                    programRight.Descr = result["Descr"].ToString();
+                    programRight.IsChecked = result["IsChecked"].ToString();
+                    programRights.Add(programRight);
+                }
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, List<ProgramRight>>(message, programRights);
+        }
+
+
         public async Task<Tuple<string>> AssignGroupProgramsRights(int RoleId, string XML)
         {
             string message = string.Empty;
             try
             {
                 var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "USP_GET_PROGRAMS_RIGHTS_BY_USERID";
+                command.CommandText = "USP_SAVE_GROUP_RIGHTS";
                 command.CommandType = CommandType.StoredProcedure;
 
                 var parameter = new SqlParameter();
@@ -140,7 +191,7 @@ namespace BAL.Implementations
                 command.Parameters.Add(parameter);
 
                 parameter = new SqlParameter();
-                parameter.ParameterName = "@ProgramRights";
+                parameter.ParameterName = "@Rights";
                 parameter.SqlValue = XML;
                 parameter.SqlDbType = SqlDbType.Xml;
                 parameter.Direction = ParameterDirection.Input;

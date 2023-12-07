@@ -687,7 +687,7 @@ EXEC USP_ASSIGN_ROLE 2, 1, 1;
 
 
 /*----- PROC 17 -----*/
-/*----- GET PROGRAM RIGHTS -----*/
+/*----- GET PROGRAM RIGHTS BY USERID(INDIVIDUAL) -----*/
 CREATE PROCEDURE USP_GET_PROGRAMS_RIGHTS_BY_USERID
 @UserId INT
 AS
@@ -724,4 +724,103 @@ END
 EXEC USP_GET_PROGRAMS_RIGHTS_BY_USERID 2;
 
 
+/*----- PROC 18 -----*/
+/*----- GET PROGRAM RIGHTS BY ROLEID(GROUP) -----*/
+CREATE PROCEDURE USP_GET_PROGRAMS_RIGHTS_BY_ROLEID
+@RoleId INT
+AS
+BEGIN
+	/*--- GENERATE A TEMPORARY TABLE THAT STORE TBL_RIGHTS COPY DATA ---*/
+	SELECT Id, P_Title, Descr INTO #Program_Temp FROM Program_Master(NOLOCK)
+					WHERE Status = 1;
+
+	/*--- ADD A COLUMN "IsChecked" IN TEMPORARY TABLE 
+			FOR CHECK WHICH RIGHTS ASSIGN TO USER OR NOT 
+			FOR ASSIGN THEN IsChecked = 1 OTHERWISE = 0 ---*/
+	ALTER TABLE #Program_Temp ADD IsChecked TINYINT DEFAULT 0 WITH VALUES;;
+
+	/*--- UPDATE TEMPORARY TABLE COLUMN "IsChecked" FOR STORE A 1/0 
+			ACCORDING TO ROLE ID ---*/
+	UPDATE temp
+			SET temp.IsChecked = 1 FROM #Program_Temp(NOLOCK) temp
+			INNER JOIN Tbl_Rights(NOLOCK) r
+			ON  temp.Id = r.Programe_id
+			WHERE r.RoleId = @roleId
+			AND r.Status = 1;
+
+	SELECT*FROM #Program_Temp;
+	/*--- DROP A TEMPORARY TABLE ---*/
+	DROP TABLE #Program_Temp;
+END
+
+/*----- FOR CHECKING-----*/
+EXEC USP_GET_PROGRAMS_RIGHTS_BY_ROLEID 1;
+
+
+/*----- PROC 19 -----*/
+/*----- ASSIGN PROGRAM RIGHTS FOR USERID(INDIVIDUAL) -----*/
+CREATE PROCEDURE USP_SAVE_INDIVIDUAL_RIGHTS
+@UserId INT,
+@Rights XML
+AS
+BEGIN
+	SELECT
+		n.value('Id[1]','VARCHAR(20)') AS Program_Id,
+		n.value('IsChecked[1]','VARCHAR(20)') AS IsChecked
+		INTO #Rights
+		FROM @Rights.nodes('/ArrayOfAssignProgramRightModel/AssignProgramRightModel') AS p(n)
+
+		/*DELETE FROM #Rights
+			WHERE Program_Id 
+					NOT IN (SELECT Program_Id FROM Tbl_Rights WHERE UserId = @UserId) AND IsChecked = 0;
+*/
+		UPDATE T
+			SET T.Status = R.IsChecked
+			FROM Tbl_Rights T
+			INNER JOIN #Rights R
+			ON T.Programe_id = R.Program_Id
+			WHERE T.UserId = @UserId AND T.Status<>R.IsChecked;
+
+		INSERT INTO Tbl_Rights(Programe_id, UserId, Status)
+			SELECT Program_Id, @UserId, IsChecked
+				FROM #Rights
+				WHERE Program_Id NOT IN  (SELECT Programe_id FROM Tbl_Rights WHERE UserId = @UserId)
+				AND IsChecked = 1
+
+		DROP TABLE #Rights
+END
+
+
+/*----- PROC 20 -----*/
+/*----- ASSIGN PROGRAM RIGHTS FOR ROLEID(GROUP) -----*/
+CREATE PROCEDURE USP_SAVE_GROUP_RIGHTS
+@RoleId INT,
+@Rights XML
+AS
+BEGIN
+	SELECT
+		n.value('Id[1]','VARCHAR(20)') AS Program_Id,
+		n.value('IsChecked[1]','VARCHAR(20)') AS IsChecked
+		INTO #Rights
+		FROM @Rights.nodes('/ArrayOfAssignProgramRightModel/AssignProgramRightModel') AS p(n)
+
+		/*DELETE FROM #Rights
+			WHERE Program_Id 
+					NOT IN (SELECT Program_Id FROM Tbl_Rights WHERE RoleId = @RoleId) AND IsChecked = 0;
+*/
+		UPDATE T
+			SET T.Status = R.IsChecked
+			FROM Tbl_Rights T
+			INNER JOIN #Rights R
+			ON T.Programe_id = R.Program_Id
+			WHERE T.RoleId = @RoleId AND T.Status<>R.IsChecked;
+
+		INSERT INTO Tbl_Rights(Programe_id, RoleId, Status)
+			SELECT Program_Id, @RoleId, IsChecked
+				FROM #Rights
+				WHERE Program_Id NOT IN  (SELECT Programe_id FROM Tbl_Rights WHERE RoleId = @RoleId)
+				AND IsChecked = 1;
+
+		DROP TABLE #Rights
+END
 
