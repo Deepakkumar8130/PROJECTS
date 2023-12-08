@@ -53,22 +53,24 @@ INSERT INTO Program_Master (
 	Descr,
 	Display_Sequence,
 	Status
-) VALUES
-('Add Claim','Claim/AddClaim','Add new claim',0,1),
-('Employee Claims','Claim/ShowClaim','show claim request',1,1),
-('Dashboard','Home/Dashboard','dashboard',2,1),
-('Show Claim Status','Claim/ClaimStatus','Show Claim Status',3,1),
-('Claim Transactions','Claim/ShowClaimTransaction','Show Claims Transaction',3,1),
-('Managed User','User/ManageUser','Users Managed',4,1),
-('Managed Roles','Role/ManageRole','Roles Managed',5,1),
-('Assign Role','Role/AssignRole','Assigned Role To User',6,1),
-('Assign Individual Rights','ProgramRights/AssignRights','Assigned Program Rights',7,1),
-('Assign Group Rights','ProgramRights/AssignGroupRights','Assigned Program Rights For Group',8,1);
+) VALUES/*
+('Add Claim','Claim/AddClaim','Add new claim',1,1),
+('Employee Claims','Claim/ShowClaim','show claim request',2,1),
+('Dashboard','Home/Dashboard','dashboard',3,1),
+('Show Claim Status','Claim/ClaimStatus','Show Claim Status',4,1),
+('Claim Transactions','Claim/ShowClaimTransaction','Show Claims Transaction',5,1),
+('Managed User','User/ManageUser','Users Managed',6,1),
+('Managed Roles','Role/ManageRole','Roles Managed',7,1),
+('Assign Role','Role/AssignRole','Assigned Role To User',8,1),
+('Assign Individual Rights','ProgramRights/AssignRights','Assigned Program Rights',9,1),
+('Assign Group Rights','ProgramRights/AssignGroupRights','Assigned Program Rights For Group',10,1),*/
+('Managed Program','Program/ManageProgram','Programs Managed',11,1);
+
 
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
 INSERT INTO Tbl_Rights(Programe_id,UserId,RoleId,Status)
-VALUES
+VALUES/*
 /*--- EMPLOYEE ---*/
 (1,NULL,1,1),
 (3,NULL,1,1),
@@ -110,7 +112,8 @@ VALUES
 (7,NULL,6,1),
 (8,NULL,6,1),
 (9,NULL,6,1),
-(10,NULL,6,1);
+(10,NULL,6,1),*/
+(11,NULL,6,1);
 
 
 

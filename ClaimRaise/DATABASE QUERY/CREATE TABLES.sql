@@ -94,7 +94,7 @@ CREATE TABLE Employee_Claim_Transaction
 	Employee_Id INT,
 	Amount DECIMAL,
 	TransactionDt DATETIME,
-	CliamId INT,
+	ClaimId INT,
 	Status TINYINT
 );
 

@@ -304,7 +304,7 @@ BEGIN
 									Employee_Id,
 									Amount,
 									TransactionDt,
-									CliamId,
+									ClaimId,
 									Status
 									) VALUES(
 									4548,
@@ -343,7 +343,7 @@ BEGIN
 		um.Nm ApprovedBy
 		FROM Employee_Claim_Transaction(NOLOCK) emt
 		INNER JOIN Claim_Master(NOLOCK) cm
-		ON emt.CliamId = cm.Id
+		ON emt.ClaimId = cm.Id
 		INNER JOIN User_Master(NOLOCK) um
 		on emt.Employee_Id = um.Id
 		WHERE cm.UserId = @UserId; 
@@ -824,3 +824,112 @@ BEGIN
 		DROP TABLE #Rights
 END
 
+
+
+/*----- PROC 21 -----*/
+/*----- PROGRAM MANAGE -----*/
+CREATE PROCEDURE USP_MANAGED_PROGRAM
+@Action VARCHAR(20), --- This action like Create/Update/Get ---
+@Id INT = NULL,
+@Title VARCHAR(100) = NULL,
+@Path VARCHAR(100) = NULL,
+@Descr VARCHAR(100) = NULL,
+@Updated_Sequence VARCHAR(100) = NULL,
+@Status TINYINT = NULL
+AS
+BEGIN
+	IF @Action = 'create' AND EXISTS (SELECT 1 FROM Program_Master WHERE Path  = @Path)
+		BEGIN
+			THROW 50000, 'Progarm Already Exist', 1;
+			RETURN;
+		END
+	IF @Action = 'update' AND EXISTS (SELECT 1 FROM Program_Master WHERE Path  = @Path AND Id <> @Id)
+		BEGIN
+			THROW 50000, 'Progarm Already Exist For Another Someone', 1;
+			RETURN;
+		END
+	BEGIN TRY
+		BEGIN TRAN trn_progManage
+			IF @Action = 'create'
+				BEGIN
+				DECLARE @Display_Sequence INT;
+				SELECT @Display_Sequence = MAX(Display_Sequence)+1 FROM Program_Master;
+					INSERT INTO Program_Master(
+											P_Title,
+											Path,
+											Descr,
+											Display_Sequence,
+											Status
+											)VALUES(
+											@Title,
+											@Path,
+											@Descr,
+											@Display_Sequence,
+											@Status);
+					SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action = 'update'
+				BEGIN
+				DECLARE @Current_Sequence INT;
+				SELECT @Current_Sequence = Display_Sequence FROM Program_Master WHERE Id = @Id;
+
+				IF @Current_Sequence <> @Updated_Sequence
+					BEGIN
+						UPDATE Program_Master SET Display_Sequence = @Current_Sequence
+										WHERE Display_Sequence = @Updated_Sequence;
+					END
+
+					UPDATE Program_Master SET
+										P_Title = @Title,
+										Path = @Path,
+										Descr = @Descr,
+										Display_Sequence = @Updated_Sequence,
+										Status = @Status
+										WHERE Id = @Id;
+					SELECT 1 AS RESULT;
+				END
+			ELSE IF @Action = 'get'
+				BEGIN
+					SELECT
+						Id, P_Title Title, Path, Descr, Display_Sequence Sequence, Status
+						FROM Program_Master(NOLOCK)
+						WHERE Id = @Id;
+				END
+			ELSE IF @Action = 'getall'
+				BEGIN
+					SELECT
+						Id, P_Title Title, Path, Descr, Display_Sequence Sequence, Status
+						FROM Program_Master(NOLOCK) ORDER BY Display_Sequence;
+				END
+		COMMIT TRAN trn_progManage;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN trn_progManage;
+	END CATCH
+END
+
+
+/*----- FOR CHECKING-----*/
+/*--- CREATE ---*/
+/* EXEC USP_MANAGED_PROGRAM @Action='create',
+					  @Title = 'Test B',
+					  @Path = 'Test/Program B',
+					  @Descr = 'Testing Purpose for B',
+					  @Status = 1;
+*/
+/*--- UPDATE ---*/
+/* EXEC USP_MANAGED_PROGRAM @Action='update',
+					  @Id = 12,
+					  @Title = 'Test C',
+					  @Path = 'Test/Program C',
+					  @Descr = 'Testing Purpose for C',
+					  @Updated_Sequence = 11,
+					  @Status = 1;
+*/
+/*--- GET ---*/
+/* EXEC USP_MANAGED_PROGRAM @Action='get',
+					   @Id = 6;
+*/
+/*--- GETALL ---*/
+/* EXEC USP_MANAGED_PROGRAM @Action='getall';
+*/

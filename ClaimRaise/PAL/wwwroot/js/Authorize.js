@@ -14,7 +14,7 @@ function checkUserLoggedIn() {
 $(document).ready(function () {
 
     
-    console.log(UserLoginInfo)
+    //console.log(UserLoginInfo)
     $("#btnLogout").click(function () {
         localStorage.removeItem("UserLoginInfo");
         localStorage.removeItem("token");

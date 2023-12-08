@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Manage Programs</h4><button class=" float-right btn btn-sm btn-info" id="btnAdd">+ Add New</button>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="tblPrograms">
+                <thead>
+                    <tr>
+                        <th>SNO.</th>
+                        <th>Title</th>
+                        <th>Path</th>
+                        <th>Description</th>
+                        <th>Display Sequence</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- modal -->
+<div class="modal fade" id="modalAddPrograms">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:52pc; margin-left:-189px">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Program</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-5">
+
+                <form id="ProgramForm">
+                    <div class="row">
+                        <input type="hidden" class="form-control" id="hdnProgId" value="0" />
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupProgramTitle">
+                                <label>Title <span class="mandatory">*</span></label>
+                                <input type="text" class="form-control" id="txtProgramTitle" />
+                                <span id="errProgramTitle"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupStatus">
+                                <label>Status <span class="mandatory">*</span></label>
+                                <select class="form-control" id="ddlStatus">
+                                    <option value="-1">Select</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">InActive</option>
+                                </select>
+                                <span id="errStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupController">
+                                <label>Controller <span class="mandatory">*</span></label>
+                                <input type="text" class="form-control" id="txtController" />
+                                <span id="errController"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupAction">
+                                <label>Action <span class="mandatory">*</span></label>
+                                <input type="text" class="form-control" id="txtAction" />
+                                <span id="errAction"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupSequence">
+                                <label>Display Sequence <span class="mandatory">*</span></label>
+                                <select class="form-control" id="ddlSequence">
+                                    <option value="">Select</option>
+                                </select>
+                                <span id="errSequence"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group" id="formGroupProgramDescr">
+                                <label>Description <span class="mandatory">*</span></label>
+                                <textarea type="text" class="form-control" id="txtProgramDescr"></textarea>
+                                <span id="errProgramDescr"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-around m-3">
+                        <button type="button" class="btn w-25 btn-sm btn-primary p-2" id="btnProgFormReset">Refersh</button>
+                        <button type="button" class="btn w-25 btn-sm btn-success p-2" id="btnProgSubmit">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script src="~/js/progam/manageprog.js"></script>

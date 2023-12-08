@@ -11,5 +11,10 @@ namespace BAL.Interfaces
     {
         Task<UserVM> GetUserByEmailId(string email);
         Task<List<UserProgram>> GetProgramsById(int UserId);
+
+        Task<Tuple<string, List<ProgramMaster>>> GetData();
+        Task<Tuple<string, ProgramMaster>> GetSingleProg(int ProgId);
+        Task<string> AddProg(ProgramMaster program);
+        Task<string> UpdateProg(ProgramMaster program);
     }
 }
