@@ -36,29 +36,19 @@ GO;
 
 /*----- PROC 2 -----*/
 /*----- GET PROGRAMS THROUGH USERID -----*/
-ALTER PROCEDURE USP_GET_PROGRAMS
+CREATE PROCEDURE USP_GET_PROGRAMS
 @userId INT
 AS
 BEGIN
-	DECLARE @RoleId INT;
-	SELECT @RoleId = RoleId FROM Role_Employee_Mapping(NOLOCK) WHERE EmpId = @userId;
-
-	SELECT prog.Id, prog.P_title, prog.Path, prog.Descr INTO #Programs FROM Program_Master prog
-	INNER JOIN Tbl_Rights(NOLOCK) tbl
-	ON prog.Id = TBL.Programe_id
-	WHERE tbl.RoleId = @RoleId AND tbl.Status = 1 AND prog.Status = 1;
-
-	DELETE FROM #Programs
-		WHERE Id IN (SELECT Programe_id FROM Tbl_Rights WHERE UserId = @userId AND Status = 0)
-
-	INSERT INTO #Programs(Id,P_Title,Path,Descr)
-			SELECT Id, P_title,Path,Descr FROM Program_Master 
-					WHERE Id IN (SELECT Programe_id FROM Tbl_Rights WHERE UserId = @userId AND Status = 1)
-					AND Id NOT IN (SELECT Id FROM #Programs)
-
-	SELECT Id, P_title Title, Path Path, Descr Description 
-			FROM #Programs ORDER BY Id
-	DROP TABLE #Programs
+	SELECT DISTINCT prog.Id, prog.P_title Title, prog.Path Path, prog.Descr Description
+	FROM Tbl_Rights(NOLOCK) tbl
+	INNER JOIN Program_Master(NOLOCK) prog
+	ON prog.Id = tbl.Programe_id
+	where tbl.UserId = @userId
+	AND tbl.Status = 1 
+	AND prog.Status = 1
+	OR tbL.RoleId IN (SELECT RoleId FROM Role_Employee_Mapping(NOLOCK) WHERE EmpId = @userId)
+	ORDER BY prog.Id;
 END
 
 /*----- FOR CHECKING-----*/
