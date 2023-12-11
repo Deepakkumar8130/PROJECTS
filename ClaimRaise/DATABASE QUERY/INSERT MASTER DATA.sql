@@ -70,7 +70,7 @@ INSERT INTO Program_Master (
 
 /*----- ASIGN PROGRAMS RIGHTS ------*/
 INSERT INTO Tbl_Rights(Programe_id,UserId,RoleId,Status)
-VALUES/*
+VALUES
 /*--- EMPLOYEE ---*/
 (1,NULL,1,1),
 (3,NULL,1,1),
@@ -112,7 +112,7 @@ VALUES/*
 (7,NULL,6,1),
 (8,NULL,6,1),
 (9,NULL,6,1),
-(10,NULL,6,1),*/
+(10,NULL,6,1),
 (11,NULL,6,1);
 
 
