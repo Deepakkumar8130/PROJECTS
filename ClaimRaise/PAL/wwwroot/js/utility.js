@@ -208,3 +208,29 @@ function GetAllUsersWithRole() {
         }
     })
 }
+
+window.onload = function () {
+    IsSecurePath()
+}
+
+function IsSecurePath() {
+    if (window.location.pathname.substring(1) != "Home/Privacy") {
+        $.ajax({
+            "url": base_url + "Account/Auth",
+            "method": "GET",
+            contentType: JSON,
+
+            "data": { "UserId": UserLoginInfo.id, "path": window.location.pathname.substring(1) },
+            "success": function (response) {
+               
+                if (!response.ok) {
+
+                    window.location.href = rootPath + "Home/Privacy"
+                }
+            },
+            "error": function (err) {
+                console.log(err)
+            }
+        })
+    }
+}

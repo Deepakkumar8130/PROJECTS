@@ -15,6 +15,8 @@ $(document).ready(function () {
 
     
     //console.log(UserLoginInfo)
+
+    BindSideInfo();
     $("#btnLogout").click(function () {
         localStorage.removeItem("UserLoginInfo");
         localStorage.removeItem("token");
@@ -50,8 +52,23 @@ function applyTheme(newTheme) {
         element.classList.remove('light', 'dark-mode');
         element.classList.add(newTheme);
     });
+}
 
-    
-    
-    
+
+
+$(document).ajaxStart(function () {
+    $("#loader-wrapper").show();
+});
+
+$(document).ajaxStop(function () {
+   $("#loader-wrapper").hide();
+});
+
+
+function BindSideInfo() {
+    $("#txtSideName").html("Name: " + UserLoginInfo.userName)
+    $("#txtSideEmail").html("Email: " + UserLoginInfo.email)
+    $("#txtSideMobile").html("Mobile: " + UserLoginInfo.mobile)
+    $("#txtSideRole").html("Role: " + UserLoginInfo.role)
+    $("#txtSideManager").html("Manager: " + UserLoginInfo.managerId)
 }

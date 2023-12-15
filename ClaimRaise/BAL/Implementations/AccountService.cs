@@ -4,6 +4,7 @@ using DAL.Data;
 using MAL;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,61 +24,7 @@ namespace BAL.Implementations
             _context = context;
         }
 
-        //public async Task<List<UserProgram>> GetProgramsById(int UserId)
-        //{
-        //    var command = _context.Database.GetDbConnection().CreateCommand();
-        //    command.CommandText = "USP_GET_PROGRAMS";
-        //    command.CommandType = CommandType.StoredProcedure;
-
-        //    var userId = new SqlParameter("@userId", UserId);
-        //    command.Parameters.Add(userId);
-
-        //    var result = command.ExecuteReader();
-        //    List<UserProgram> Programs = new List<UserProgram>();
-        //    while (result.Read())
-        //    {
-        //        UserProgram program = new UserProgram();
-        //        program.Id = result["Id"].ToString();
-        //        program.Title = result["Title"].ToString();
-        //        program.Path = result["Path"].ToString();
-        //        program.Description = result["Description"].ToString();
-        //        Programs.Add(program);
-        //    }
-        //    return Programs;
-        //}
-
-        //public async Task<UserVM> GetUserByEmailId(string Useremail)
-        //{
-        //    try
-        //    {
-        //        var command = _context.Database.GetDbConnection().CreateCommand();
-        //        command.CommandText = "USP_GET_USER_BY_EMAIL";
-        //        command.CommandType = CommandType.StoredProcedure;
-
-        //        var email = new SqlParameter("@email", Useremail);
-               
-        //        command.Parameters.Add(email);
-        //        _context.Database.OpenConnection();
-        //        var result = command.ExecuteReader();
-        //        //UserVM UserInfo = await _context.Database.SqlQueryRaw<UserVM>($"EXEC USP_GET_USER_BY_EMAIL @email={email}").FirstOrDefaultAsync();
-        //        result.Read();
-        //        UserVM user = new UserVM();
-        //        user.Id = result["Id"].ToString();
-        //        user.Email = result["Email"].ToString();
-        //        user.Mobile = result["Mobile"].ToString();
-        //        user.UserName = result["Nm"].ToString();
-        //        user.ManagerId = result["Manager_Id"].ToString();
-        //        return user;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        _context.Database.CloseConnection();
-        //    }
-        //}
+        
 
         public async Task<LoginResult> Login(UserLogin user)
         {
@@ -103,6 +50,55 @@ namespace BAL.Implementations
         public void Logout()
         {
             throw new NotImplementedException();
+        }
+
+
+        public async Task<Tuple<string, string>> pageRights(int UserId, string path)
+        {
+            string message = string.Empty;
+            string result = string.Empty;
+            try
+            {
+                var command = _context.Database.GetDbConnection().CreateCommand();
+                command.CommandText = "USP_CHECK_PROGRAM_RIGHTS";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var parameter = new SqlParameter();
+
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@UserId";
+                parameter.SqlValue = UserId;
+                parameter.SqlDbType = SqlDbType.Int;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                parameter = new SqlParameter();
+                parameter.ParameterName = "@path";
+                parameter.SqlValue = path;
+                parameter.SqlDbType = SqlDbType.VarChar;
+                parameter.Direction = ParameterDirection.Input;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+                result = command.ExecuteScalar().ToString();
+
+            }
+            catch (SqlException ex)
+            {
+                message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+
+                message = ex.Message;
+            }
+            finally
+            {
+                _context.Database.CloseConnection();
+            }
+
+            return new Tuple<string, string>(message, result);
         }
     }
 }

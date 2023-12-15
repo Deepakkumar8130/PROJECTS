@@ -11,8 +11,8 @@ namespace BAL.Interfaces
     public interface IAccountService
     {
         Task<LoginResult> Login(UserLogin user);
-        //Task<UserVM> GetUserByEmailId(string email);
-        //Task<List<UserProgram>> GetProgramsById(int UserId);
         void Logout();
+
+        Task<Tuple<string, string>> pageRights(int UserId, string path);
     }
 }

@@ -77,7 +77,7 @@ namespace ClaimRasieAPI.Controllers
             return Ok(response);
         }
 
-     
+
 
         private string GenerateJSONWebToken(UserVM userInfo)
         {
@@ -97,6 +97,52 @@ namespace ClaimRasieAPI.Controllers
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        [HttpGet]
+        [Route("Auth")]
+        public async Task<IActionResult> Auth(int UserId, string path)
+        {
+            try
+            {
+
+                var result = await _accountService.pageRights(UserId, path);
+                if (string.IsNullOrEmpty(result.Item1))
+                {
+                    if (result.Item2 == "1")
+                    {
+                        response.status = 200;
+                        response.ok = true;
+                        response.data = null;
+                        response.message = "Approved";
+                    }
+                    else
+                    {
+                        response.status = -100;
+                        response.ok = false;
+                        response.data = null;
+                        response.message = "Dont have permission for this page";
+
+                    }
+                }
+                else
+                {
+                    response.status = -100;
+                    response.ok = false;
+                    response.data = null;
+                    response.message = result.Item1;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = -100;
+                response.ok = false;
+                response.data = null;
+                response.message = ex.Message;
+            }
+            return Ok(response);
         }
     }
 }

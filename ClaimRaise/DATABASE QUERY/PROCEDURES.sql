@@ -933,3 +933,38 @@ END
 /*--- GETALL ---*/
 /* EXEC USP_MANAGED_PROGRAM @Action='getall';
 */
+
+
+
+/*----- PROC 21 -----*/
+/*----- PROGRAM MANAGE -----*/
+CREATE PROCEDURE USP_CHECK_PROGRAM_RIGHTS
+@UserId INT,
+@path VARCHAR(200)
+AS
+BEGIN
+	DECLARE @programId INT;
+	DECLARE @roleId INT;
+
+	SELECT @programId = Id FROM Program_Master WHERE path = @path and Status = 1;
+	SELECT @roleId = RoleId FROM Role_Employee_Mapping WHERE EmpId = @userid and Status =1;
+	IF(@programId = (SELECT Id FROM Program_Master WHERE P_Title = 'Dashboard' and Status = 1))
+		BEGIN 
+			SELECT 1 as result
+		END
+
+	ELSE IF EXISTS ( SELECT 1 FROM Tbl_Rights(NOLOCK) WHERE Programe_id=@programId AND (UserId = @userid OR RoleId = @roleId) AND status = 1)
+		BEGIN
+			SELECT 1 AS result
+		END
+	ELSE
+		BEGIN
+			SELECT 0 AS result
+		END
+END
+
+
+/*----- FOR CHECKING-----*/
+EXEC USP_CHECK_PROGRAM_RIGHTS 1,'Home/Dashboard';
+
+EXEC USP_CHECK_PROGRAM_RIGHTS 1,'Program/ManageProgram';

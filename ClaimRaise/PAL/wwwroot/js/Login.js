@@ -24,7 +24,7 @@ $(document).ready(function () {
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("theme", "light");
                     setTimeout(function () {
-                        window.location.href = "/Home/Index"
+                        window.location.href = "/Home/Dashboard"
                     }, 500);
                 }
                 else {

@@ -30,6 +30,11 @@
     <!-- sweetalert2 -->
     <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="~/plugins/sweetalert2/sweetalert2.css" rel="stylesheet" />
+
+
+  
+    <link href="~/pageloader/stylesheet.css" rel="stylesheet" />
+
     <!--DataTables-->
     <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -120,6 +125,12 @@
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div> *@
+        <!-- loader -->
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+        </div>
+        <!-- /.loader -->
+
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand">
@@ -986,19 +997,23 @@
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
             <div class="card h-100">
-                <div class="card-header text-center">
-                    <h4 class="text-dark">User Profile Information</h4>
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>User Profile Information</h4>
                 </div>
                 <div class="card-body">
-                    <ul>
-                        <li class="text-bold" id="">Name</li>
-                        <li id="">Name</li>
-                        <li id="">Name</li>
-                        <li id="">Name</li>
+                    <ul class="list-group">
+                        <li class="list-group-item" id="txtSideName">Name: John Doe</li>
+                        <li class="list-group-item" id="txtSideEmail" >Email: john.doe@example.com</li>
+                        <li class="list-group-item" id="txtSideMobile">Mobile: +123 456 789</li>
+                        <li class="list-group-item" id="txtSideRole">Role: Administrator</li>
+                        <li class="list-group-item" id="txtSideManager">Manager Id: Jane Smith</li>
                     </ul>
                 </div>
-                <button class="btn btn-sm btn-primary" id="btnViewIdCard">View Id-Card</button>
+                <div class="card-footer text-center">
+                    <button class="btn btn-sm btn-primary" id="btnViewIdCard">View ID-Card</button>
+                </div>
             </div>
+
         </aside>
         <!-- /.control-sidebar -->
 
@@ -1057,5 +1072,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script> 
     @await RenderSectionAsync("Scripts", required: false)*@
 
+
 </body>
 </html>
+

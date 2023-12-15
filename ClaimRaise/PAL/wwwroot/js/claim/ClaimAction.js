@@ -34,11 +34,12 @@ function GetAllPendingRequests() {
         data: { "UserId": UserLoginInfo.id, "Role": UserLoginInfo.role },
         "success": function (response) {
             console.log(response.data)
-            response.data = response.data.map(function (item, index) {
-                item.serialNo = index + 1; // Serial numbers start from 1
-                return item;
-            });
+            
             if (response.ok) {
+                response.data = response.data.map(function (item, index) {
+                    item.serialNo = index + 1; // Serial numbers start from 1
+                    return item;
+                });
                 $("#tblPendingRequest").DataTable().destroy()
                 $("#tblPendingRequest").DataTable({
                     data: response.data,

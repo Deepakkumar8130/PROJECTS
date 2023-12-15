@@ -13,7 +13,9 @@ namespace PAL.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+    
+
+        public async Task<IActionResult> Dashboard()
         {
             return View();
         }
