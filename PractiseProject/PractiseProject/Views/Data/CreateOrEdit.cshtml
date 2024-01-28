@@ -1,0 +1,92 @@
+﻿@model model1
+@{
+	ViewData["Title"] = Model != null && Model.Id == 0 ? "Add Record" : "Update Record";
+}
+
+<form method="post" action="CreateOrEdit">
+	<div class="card m-5">
+		<div class="card-header bg-info">
+			<div class="text-center ">
+				<h2 id="AddHeader">@ViewData["Title"]</h2>
+			</div>
+		</div>
+		
+		<div class="card-body p-5">
+			<div class="row">
+				<div class="col-6">
+					<input type="hidden" asp-for="Id" />
+					<div class="form-group mb-3" id="formGroupName">
+						<label id="lblName">Name</label>
+						<input class="form-control" id="txtName" asp-for="Name" />
+					</div>
+					<div class="form-group mb-3" id="formGroupEmail">
+						<label id="lblEmail">Email</label>
+						<input class="form-control" id="txtEmail" asp-for="Email" />
+					</div>
+					<div class="form-group mb-3" id="formGroupDate">
+						<label id="lblDate">Date</label>
+						<input class="form-control" type="date" id="txtDate" asp-for="Date" />
+					</div>
+				</div>
+
+				<div class="col-6">
+					<div class="form-group mb-3" id="formGroupAge">
+						<label id="lblAge">Age</label>
+						<input class="form-control" type="number" min="0" id="txtAge" asp-for="Age" />
+					</div>
+					<div class="form-group mb-3" id="formGroupGender">
+						<label id="lblGender">Gender</label>
+						<div class="row">
+							<div class="col-auto">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="Gender" id="maleRadio" value="Male">
+									<label class="form-check-label" for="maleRadio">Male</label>
+								</div>
+							</div>
+							<div class="col-auto">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="Gender" id="femaleRadio" value="Female">
+									<label class="form-check-label" for="femaleRadio">Female</label>
+								</div>
+							</div>
+							<div class="col-auto">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="Gender" id="otherRadio" value="Other">
+									<label class="form-check-label" for="otherRadio">Other</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group mb-3" id="formGroupCurrentAddress">
+						<label id="lblCurrentAddress">CurrentAddress</label>
+						<textarea class="form-control" id="txtCurrentAddress" asp-for="Current_Address"></textarea>
+					</div>
+					<div class="form-check mb-3">
+						<input class="form-check-input" type="checkbox" id="sameAddressCheckbox">
+						<label class="form-check-label" for="sameAddressCheckbox">Same as Current Address</label>
+					</div>
+					<div class="form-group mb-3" id="formGroupPermanentAddress">
+						<label id="lblPermanentAddress">PermanentAddress</label>
+						<textarea class="form-control" id="txtPermanentAddress" asp-for="Permanent_Address"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group mt-3">
+					@if (Model.Id == 0)
+					{
+						<input type="submit" value="Submit" id="btnSubmit" class="btn btn-success w-25" />
+
+					}
+					else
+					{
+						<input type="submit" value="Update" id="btnSubmit" class="btn btn-success w-25" />
+					}
+					@*<button  asp-action="Index" asp-controller="Data" class="btn btn-secondary w-25">Back</button>*@
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<script src="~/js/custom.js"></script>
